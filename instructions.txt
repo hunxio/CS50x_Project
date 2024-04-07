@@ -1,3 +1,5 @@
+REMINDER F0R ME
+
 In order to test the website and make it run, we need to install flask and
 activate the virtual enviroment. Note that the virtutal enviroment it will
 be already setted up, it just needs to be activated everytime; also the 
@@ -13,7 +15,7 @@ Windows
 3.	setx FLASK_APP "hello.py"
 4a.	flask run
 		or
-4b.	flask --app X.py --debug run
+4b.	flask --app X.py --debug run (live edit)
 
 
 MacOS
@@ -24,4 +26,4 @@ MacOS
 3.	export FLASK_APP=hello.py
 4a.	flask run
 		or
-4b.	flask --app X.py --debug run
+4b.	flask --app X.py --debug run (live edit)
