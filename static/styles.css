@@ -1,0 +1,63 @@
+* {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  background-color: #fff;
+  color: #29292b;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+body {
+  background-color: #29292b;
+}
+
+footer {
+  background-color: #fff;
+  color: #29292b;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-top: 6.79px;
+}
+
+.logo {
+  margin: 0 auto;
+}
+
+.logo img {
+  max-width: 200px;
+}
+
+.accessibility-links {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.accessibility-links a {
+  color: #29292b;
+  margin-left: 50px;
+  text-decoration: none;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.signature {
+  color: #29292b;
+  text-decoration: none;
+}
