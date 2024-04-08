@@ -12,10 +12,10 @@ Windows
 0.	Open the terminal and go onto the dir.
 1.	virtualenvWindows\Scripts\activate
 2.	pip install Flask
-3.	setx FLASK_APP "hello.py"
+3.	setx FLASK_APP "app.py"
 4a.	flask run
 		or
-4b.	flask --app X.py --debug run (live edit)
+4b.	flask --app app.py --debug run (live edit)
 
 
 MacOS
@@ -23,7 +23,7 @@ MacOS
 0.	Open the terminal and go onto the dir.
 1.	. virtualenvOS/bin/activate
 2.	pip install Flask
-3.	export FLASK_APP=hello.py
+3.	export FLASK_APP=app.py
 4a.	flask run
 		or
-4b.	flask --app X.py --debug run (live edit)
+4b.	flask --app app.py --debug run (live edit)

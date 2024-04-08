@@ -10,7 +10,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../static/styles.css" />
-    <title>Movies DB: Home</title>
+    <title>Movies DB: {% block title %}{% endblock %}</title>
   </head>
 
   <body>
@@ -18,10 +18,7 @@
       <div class="logo">
         <a href="#"><img src="../static/media/logo.png" alt="Logo" /></a>
       </div>
-      <div class="accessibility-links">
-        <a href="#">Log In</a>
-        <a href="#">Register</a>
-      </div>
+      {% block accessibility %} {% endblock %}
     </header>
     <footer>
       <div class="footer-container">
