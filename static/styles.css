@@ -1,0 +1,10 @@
+.no-decoration {
+    text-decoration: none;
+    color: #495057;
+}
+
+/* Background bar color: #212529 */
+.logo-size {
+    width: 40px;
+    height: 40px;
+}
