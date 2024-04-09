@@ -1,1 +1,22 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} 
+
+{% block title %} 
+    Login 
+{% endblock %} 
+
+{% block navbar %}
+<ul
+  class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+>
+  <li class="padd-left-fix">Login</li>
+</ul>
+
+<div class="text-end">
+  <a href="/"
+    ><button type="button" class="btn btn-outline-light me-2">Home</button></a
+  >
+  <a href="/signup"
+    ><button type="button" class="btn btn-warning">Sign Up</button></a
+  >
+</div>
+{% endblock %}

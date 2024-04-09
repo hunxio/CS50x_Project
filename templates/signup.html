@@ -1,1 +1,83 @@
 {% extends "layout.html" %}
+
+<!-- TITLE -->
+{% block title %} Sign Up {% endblock %}
+
+<!-- HEADER > NAV BAR-->
+{% block navbar %}
+<ul
+  class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+>
+  <li class="padd-left-fix">Sign Up</li>
+</ul>
+
+<div class="text-end">
+  <a href="/"
+    ><button type="button" class="btn btn-outline-light me-2">Home</button></a
+  >
+  <a href="/login"
+    ><button type="button" class="btn btn-outline-light me-2">Login</button></a
+  >
+</div>
+{% endblock %}
+
+<!-- MAIN -->
+{% block main %}
+<form method="post" action="/signup">
+  <div class="">
+    <input
+      class=""
+      autofocus
+      required
+      name="first-name"
+      placeholder="First Name"
+      type="text"
+    />
+  </div>
+  <div class="">
+    <input
+      class=""
+      required
+      name="last-name"
+      placeholder="Last Name"
+      type="text"
+    />
+    <div class="">
+      <!-- IT WILL CHANGE -->
+      <input class="" required name="gender" placeholder="Gender" type="text" />
+    </div>
+    <input
+      autocomplete="off"
+      required
+      class=""
+      name="username"
+      placeholder="Username"
+      type="text"
+    />
+  </div>
+  <div class="">
+    <input class="" required name="email" placeholder="Email" type="email" />
+  </div>
+  <div class="">
+    <input
+      class=""
+      required
+      name="password"
+      placeholder="Password"
+      type="password"
+      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}"
+      title="Must contain at least one number and one uppercase and lowercase letter, and at least 4 or more characters"
+    />
+  </div>
+  <div class="">
+    <input
+      class=""
+      required
+      name="confirmation"
+      placeholder="Confirm password"
+      type="password"
+    />
+  </div>
+  <button class="" type="submit">Sign Up!</button>
+</form>
+{% endblock %}
