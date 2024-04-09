@@ -1,5 +1,9 @@
 REMINDER F0R ME
 
+EDIT: 
+	The flask settings are already setted up on both MacOS and Windows,
+	just need to run the flask commands to start it.
+	
 In order to test the website and make it run, we need to install flask and
 activate the virtual enviroment. Note that the virtutal enviroment it will
 be already setted up, it just needs to be activated everytime; also the 
@@ -10,12 +14,10 @@ work. Here are a few steps to run it:
 Windows
 
 0.	Open the terminal and go onto the dir.
-1.	virtualenvWindows\Scripts\activate
-2.	pip install Flask
-3.	setx FLASK_APP "app.py"
-4a.	flask run
+1.	setx FLASK_APP "app.py"
+2a.	flask run
 		or
-4b.	flask --app app.py --debug run (live edit)
+2b.	flask --app app.py --debug run (live edit)
 
 
 MacOS
