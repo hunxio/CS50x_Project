@@ -1,14 +1,30 @@
+:root {
+    --text-color: #495057;
+    --header-bg-color: #212529;
+}
+
 * {
     font-family: "Montserrat", sans-serif;
 }
 .no-decoration {
     text-decoration: none;
-    color: #495057;
+    color: var(--text-color);
 }
 
-/* Background bar color: #212529 */
 .logo-size {
     width: 40px;
     height: 40px;
 }
 
+.title-margin-bottom {
+    margin-bottom: 4.5rem !important;
+}
+
+.my-5-edit {
+    margin-top: 3rem !important;
+    margin-bottom: 2rem !important;
+}
+
+.padd-left-fix {
+    padding-left: 0.5rem;
+}
