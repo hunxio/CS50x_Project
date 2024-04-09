@@ -1,9 +1,11 @@
 {% extends "layout.html" %}
 
+<!-- TITLE -->
 {% block title %}
     Home
 {% endblock %}
 
+<!-- HEADER > NAV BAR-->
 {% block navbar %}
 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
     <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
@@ -15,4 +17,22 @@
     <button type="button" class="btn btn-outline-light me-2">Login</button>
     <button type="button" class="btn btn-warning">Sign Up</button>
   </div>
+{% endblock %}
+
+<!-- MAIN -->
+{%block main%}
+<div class="test row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+  <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+    <h1 class="display-4 fw-bold lh-1 text-body-emphasis">
+      "Film Lovers Unite: Share, Discover, Enjoy!"</h1>
+    <p class="lead">Welcome to MoviesDB – Your Free Movie Collection Hub! Create an account, personalize your profile, and start sharing your favorite films effortlessly!</p>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+      <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Primary</button>
+      <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
+    </div>
+  </div>
+  <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+      <img class="rounded-lg-3" src="../static/media/assorted-movie-image.jpeg" alt="Assorted-movie-images" width="720">
+  </div>
+</div>
 {% endblock %}
