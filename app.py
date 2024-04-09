@@ -12,3 +12,9 @@ def signup():
     if request.method == "POST":
         return redirect("homepage.html")
     return render_template("signup.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        return redirect("homepage.html")
+    return render_template("login.html")
