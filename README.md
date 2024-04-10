@@ -12,6 +12,7 @@ This is the final project for CS50 x 2024 made by <a href="https://www.github.co
 
 This project wants to create a social website, called MoviesDB, where you can create your
 own personal profile and add movies and tv shows to your collection.
+<img src="static/media/frontpage-readme-presentation.png">
 
 ## Installation
 
