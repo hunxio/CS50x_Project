@@ -71,3 +71,15 @@ footer{
     padding-top: 4rem;
 }
 
+.error-window {
+    z-index: 2;
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.toaster {
+    width: 400px;
+    height: 400px;
+}
