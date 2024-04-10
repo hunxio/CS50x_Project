@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+<!-- TITLE -->
+{% block title %} 
+    Whoops!
+{% endblock %} 
+
+<!-- HEADER > NAV BAR -->   
+{% block navbar %}
+<ul
+  class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+>
+  <li class="padd-left-fix">Whoops!</li>
+</ul>
+
+<div class="text-end">
+  <a href="/login"
+    ><button type="button" class="btn btn-outline-light me-2">Login</button></a
+  >
+  <a href="/signup"
+    ><button type="button" class="btn btn-warning">Sign Up</button></a
+  >
+</div>
+{% endblock %}
+
+<!-- MAIN -->
+{%block main%}
+<h1>Error</h1>
+{% endblock %}
