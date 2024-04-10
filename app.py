@@ -1,8 +1,10 @@
 import os
+import sqlite3
 from flask import Flask, render_template, redirect, request
 
 app = Flask(__name__)
-
+con = sqlite3.connect("database.db")
+cur = con.cursor()
 @app.route("/")
 def home():
     return render_template("homepage.html")
