@@ -16,11 +16,12 @@ def signup():
         username = request.form.get("username")
         password = request.form.get("password")
         return redirect("/")
-        
     return render_template("signup.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
         return redirect("/")
     return render_template("login.html")
