@@ -39,6 +39,11 @@
     margin: 0 auto;
 }
 
+.btn-login-style {
+    border: 2px solid var(--dark-blue) !important;
+    background-color: var(--dark-blue) !important;
+    color: White !important;
+}
 .top-pdd4rem {
     padding-top: 4rem;
 }
@@ -54,8 +59,15 @@ footer{
     height: 4rem; 
 }
 
-.form-signup {
+.form-styles {
     width: 50%;
     margin: 0 auto;
     padding-top: 4rem;
 }
+
+.form-styles2 {
+    width: 30%;
+    margin: 0 auto;
+    padding-top: 4rem;
+}
+
