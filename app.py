@@ -10,11 +10,17 @@ def home():
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        return redirect("homepage.html")
+        firstName = request.form.get("name")
+        lastName = request.form.get("lastname")
+        email = request.form.get("email")
+        username = request.form.get("username")
+        password = request.form.get("password")
+        return redirect("/")
+        
     return render_template("signup.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        return redirect("homepage.html")
+        return redirect("/")
     return render_template("login.html")
