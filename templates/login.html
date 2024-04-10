@@ -20,3 +20,28 @@
   >
 </div>
 {% endblock %}
+
+{% block main %}
+<form action="/login" method="post">
+  <div class="">
+    <input
+      class=""
+      autofocus
+      required
+      name="username"
+      placeholder="Username"
+      type="text"
+    />
+  </div>
+  <div class="">
+    <input
+      class=""
+      required
+      name="password"
+      placeholder="Password"
+      type="password"
+    />
+  </div>
+  <button class="" type="submit">Log In</button>
+</form>
+{% endblock %}

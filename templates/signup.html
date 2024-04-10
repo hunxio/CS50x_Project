@@ -5,79 +5,51 @@
 
 <!-- HEADER > NAV BAR-->
 {% block navbar %}
-<ul
-  class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
->
+<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
   <li class="padd-left-fix">Sign Up</li>
 </ul>
 
 <div class="text-end">
-  <a href="/"
-    ><button type="button" class="btn btn-outline-light me-2">Home</button></a
-  >
-  <a href="/login"
-    ><button type="button" class="btn btn-outline-light me-2">Login</button></a
-  >
+  <a href="/"><button type="button" class="btn btn-outline-light me-2">Home</button></a>
+  <a href="/login"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
 </div>
 {% endblock %}
 
 <!-- MAIN -->
 {% block main %}
-<form method="post" action="/signup">
-  <div class="">
-    <input
-      class=""
-      autofocus
-      required
-      name="first-name"
-      placeholder="First Name"
-      type="text"
-    />
-  </div>
-  <div class="">
-    <input
-      class=""
-      required
-      name="last-name"
-      placeholder="Last Name"
-      type="text"
-    />
-    <div class="">
-      <!-- IT WILL CHANGE -->
-      <input class="" required name="gender" placeholder="Gender" type="text" />
+<form action="/signup" method="post" class="form-signup">
+  <div class="row mb-3">
+    <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-10">
+      <input type="text" autocomplete="off" autofocus required class="form-control" id="inputName" name="name" >
     </div>
-    <input
-      autocomplete="off"
-      required
-      class=""
-      name="username"
-      placeholder="Username"
-      type="text"
-    />
   </div>
-  <div class="">
-    <input class="" required name="email" placeholder="Email" type="email" />
+  <div class="row mb-3">
+    <label for="inputLastName" class="col-sm-2 col-form-label">Last Name</label>
+    <div class="col-sm-10">
+      <input type="text" autocomplete="off" required class="form-control" id="inputLastName" name="lastname">
+    </div>
   </div>
-  <div class="">
-    <input
-      class=""
-      required
-      name="password"
-      placeholder="Password"
-      type="password"
-      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}"
-      title="Must contain at least one number and one uppercase and lowercase letter, and at least 4 or more characters"
-    />
+  <div class="row mb-3">
+    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+      <input type="email" autocomplete="off" required class="form-control" id="inputEmail" name="email">
+    </div>
   </div>
-  <div class="">
-    <input
-      class=""
-      required
-      name="confirmation"
-      placeholder="Confirm password"
-      type="password"
-    />
+  <div class="row mb-3">
+    <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
+    <div class="col-sm-10">
+      <input type="text" autocomplete="off" required class="form-control" id="inputUsername">
+    </div>
   </div>
-  <button class="" type="submit">Sign Up!</button>
+  <div class="row mb-3">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+    <div class="col-sm-10">
+      <input type="password" autocomplete="off" required class="form-control" id="inputPassword3" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}">
+    </div>
+  </div>
+  <div class="btn-position">
+    <button type="submit" class="btn btn-warning">Sign Up</button>
+  </div>
 </form>
 {% endblock %}
