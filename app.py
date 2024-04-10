@@ -22,7 +22,8 @@ def signup():
     if request.method == "POST":
         name = request.form.get("name")
         if not name:
-            return redirect("/errorpage")
+            code_error = "Name is missing!"
+            return render_template("errorpage.html", message=code_error)
         lastName = request.form.get("lastname")
         if not lastName:
             return redirect("/errorpage")
