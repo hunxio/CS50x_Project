@@ -25,5 +25,13 @@
 
 <!-- MAIN -->
 {%block main%}
-<h1>Error {{ message }}</h1>
+<div class="error-window form-styles">
+<h1>Something went wrong...</h1>
+<br>
+<h2>{{ message }}</h2>
+<img src="../static/media/broken-toaster.gif" class="toaster">
+<br>
+<br>
+<h2>Click <a href="/" class="text-color">here</a> to go back to Home.</h2>
+</div>
 {% endblock %}
