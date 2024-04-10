@@ -17,6 +17,9 @@
 
 <!-- MAIN -->
 {% block main %}
+<div class="centering-element top-pdd4rem">
+<h1 class="text-color"> Create your own personal account</h1>
+</div>
 <form action="/signup" method="post" class="form-signup">
   <div class="row mb-3">
     <label for="inputName" class="col-sm-2 col-form-label">Name</label>
@@ -45,10 +48,10 @@
   <div class="row mb-3">
     <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
     <div class="col-sm-10">
-      <input type="password" autocomplete="off" required class="form-control" id="inputPassword3" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}">
+      <input type="password" autocomplete="off" required class="form-control" id="inputPassword" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 to 16 characters.">
     </div>
   </div>
-  <div class="btn-position">
+  <div class="centering-element top-pdd2rem">
     <button type="submit" class="btn btn-warning">Sign Up</button>
   </div>
 </form>

@@ -1,6 +1,6 @@
 :root {
-    --text-color: #495057;
-    --header-bg-color: #212529;
+    --dark-grey: #495057;
+    --dark-blue: #212529;
 }
 
 * {
@@ -11,6 +11,9 @@
     color: white;
 }
 
+.text-color {
+    color: var(--dark-blue);
+}
 .logo-size {
     width: 40px;
     height: 40px;
@@ -29,19 +32,30 @@
     padding-left: 0.5rem;
 }
 
+.centering-element {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.top-pdd4rem {
+    padding-top: 4rem;
+}
+
+.top-pdd2rem {
+    padding-top: 2rem;
+}
+
 footer{
     position: absolute;
     bottom: 0;
     width: 100%;
     height: 4rem; 
 }
+
 .form-signup {
     width: 50%;
     margin: 0 auto;
     padding-top: 4rem;
-}
-
-.btn-position {
-    display: flex;
-    justify-content: center;
 }
