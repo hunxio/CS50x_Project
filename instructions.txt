@@ -29,3 +29,9 @@ MacOS
 4a.	flask run
 		or
 4b.	flask --app app.py --debug run (live edit)
+
+SQLITE3:
+
+To visualize the table as an excel table:
+1. Run sqlite3;
+2. Use the command ".mode table";
