@@ -24,9 +24,9 @@ you will only need to activate one of them and run flask:
 $ username CS50Project % flask run
  * Debug mode: off
 WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
- * Running on http://127.0.0.1:5000
+ * Running on http://123.4.5.6:7890
 ```
-
+(The numbers after the http will be different)
 copy and paste the address showed in the Terminal.
 More informations about how to install Python and activate the virtual enviroment
 on the following pages:
