@@ -35,3 +35,28 @@ SQLITE3:
 To visualize the table as an excel table:
 1. Run sqlite3;
 2. Use the command ".mode table";
+
+
+HASHING AND VERIFYING PASSWORDS:
+
+import argon2
+
+# Define the password to be hashed
+password = b'password1234#$'
+
+# Hash the password using Argon2
+hasher = argon2.PasswordHasher()
+hashed_password = hasher.hash(password)
+
+# Print the hashed password
+print(hashed_password)
+
+# Verify a password against a hashed password
+# Note that this will return True if the password matches the hash
+# and False if it does not.
+new_password = b'password1234#$'
+try:
+    hasher.verify(hashed_password, new_password)
+    print("Password is valid.")
+except argon2.exceptions.VerifyMismatchError:
+    print("Password is incorrect.")
