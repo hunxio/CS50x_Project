@@ -26,13 +26,20 @@ def signup():
             return render_template("errorpage.html", message=code_error)
         lastName = request.form.get("lastname")
         if not lastName:
-            return redirect("/errorpage")
+            code_error = "Last Name was missing"
+            return render_template("errorpage.html", message=code_error)
         email = request.form.get("email")
+        emailValidation = re.search(r"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$", email)
         if not email:
-            return redirect("/errorpage")
+            code_error = "Email was missing"
+            return render_template("errorpage.html", message=code_error)
+        elif emailValidation is None:
+            code_error = "Invalid email address"
+            return render_template("errorpage.html", message=code_error)
         username = request.form.get("username")
         if not username:
-            return redirect("/errorpage")
+            code_error = "Username was missing"
+            return render_template("errorpage.html", message=code_error)
         password = request.form.get("password")
         passwordValidation = re.search(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", password)
         if not password:
