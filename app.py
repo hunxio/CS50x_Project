@@ -3,11 +3,9 @@ import os
 import sqlite3
 from flask import Flask, render_template, redirect, request
 import re
+import argon2
 
 app = Flask(__name__)
-
-con = sqlite3.connect("database.db")
-cur = con.cursor()
 
 @app.route("/")
 def home():
@@ -20,6 +18,11 @@ def errorpage():
 @app.route("/signup", methods=["GET","POST"])
 def signup():
     if request.method == "POST":
+         # Database creation and update #
+        con = sqlite3.connect("database.db")
+        cur = con.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, lastname TEXT NOT NULL, email TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL);")
+
         name = request.form.get("name")
         if not name:
             code_error = "Name was missing"
@@ -51,7 +54,16 @@ def signup():
         elif passwordValidation is None:
             code_error = "Password not valid"
             return render_template("errorpage.html", message=code_error)
-        
+
+        # Password hash and salt with argon2 #
+        hasher = argon2.PasswordHasher()
+        hashPassword = hasher.hash(password)
+
+        # Update database #
+        cur.execute("INSERT INTO users (name, lastname, email, username, password) VALUES (?, ?, ?, ?, ?);", (name, lastName, email, username, hashPassword))
+        con.commit()
+        con.close()
+        return redirect("/")
     return render_template("signup.html")
 
 @app.route("/login", methods=["GET", "POST"])
