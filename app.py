@@ -43,11 +43,15 @@ def signup():
         password = request.form.get("password")
         passwordValidation = re.search(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", password)
         if not password:
-            return redirect("/errorpage")
+            code_error = "Password was missing"
+            return render_template("errorpage.html", message=code_error)
         elif len(password) < 8 or len(password) > 16:
-            return redirect("/errorpage")
+            code_error = "Invalid password length"
+            return render_template("errorpage.html", message=code_error)
         elif passwordValidation is None:
-            return redirect("/errorpage")
+            code_error = "Password not valid"
+            return render_template("errorpage.html", message=code_error)
+        
     return render_template("signup.html")
 
 @app.route("/login", methods=["GET", "POST"])
