@@ -1,28 +1,33 @@
 import os
 
 import sqlite3
-from flask import Flask, render_template, redirect, request
 import re
 import argon2
+from flask import Flask, render_template, redirect, request
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def home():
     return render_template("homepage.html")
 
+
 @app.route("/errorpage")
 def errorpage():
     return render_template("errorpage.html")
 
-@app.route("/signup", methods=["GET","POST"])
+
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-         # Database creation and update #
+        # Database creation and update #
         con = sqlite3.connect("database.db")
         cur = con.cursor()
-        cur.execute("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, lastname TEXT NOT NULL, email TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL);")
-        
+        cur.execute(
+            "CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, lastname TEXT NOT NULL, email TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL);"
+        )
+
         # TODO: Add more controls to check if the username and/or email already exists.abs
 
         # Getting data from inputs and checking for errors/duplicates in DB #
@@ -47,7 +52,9 @@ def signup():
             code_error = "Username was missing"
             return render_template("errorpage.html", message=code_error)
         password = request.form.get("password")
-        passwordValidation = re.search(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", password)
+        passwordValidation = re.search(
+            r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", password
+        )
         if not password:
             code_error = "Password was missing"
             return render_template("errorpage.html", message=code_error)
@@ -63,11 +70,15 @@ def signup():
         hashPassword = hasher.hash(password)
 
         # Update database #
-        cur.execute("INSERT INTO users (name, lastname, email, username, password) VALUES (?, ?, ?, ?, ?);", (name, lastName, email, username, hashPassword))
+        cur.execute(
+            "INSERT INTO users (name, lastname, email, username, password) VALUES (?, ?, ?, ?, ?);",
+            (name, lastName, email, username, hashPassword),
+        )
         con.commit()
         con.close()
         return redirect("/")
     return render_template("signup.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
