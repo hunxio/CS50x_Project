@@ -54,6 +54,12 @@ def signup():
 def login():
     if request.method == "POST":
         username = request.form.get("username")
+        if not username:
+            code_error = "Username was missing"
+            return render_template("errorpage.html", message=code_error)
         password = request.form.get("password")
+        if not password:
+            code_error = "Password was missing"
+            return render_template("errorpage.html", message=code_error)
         return redirect("/")
     return render_template("login.html")
