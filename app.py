@@ -22,7 +22,10 @@ def signup():
         con = sqlite3.connect("database.db")
         cur = con.cursor()
         cur.execute("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, lastname TEXT NOT NULL, email TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL);")
+        
+        # TODO: Add more controls to check if the username and/or email already exists.abs
 
+        # Getting data from inputs and checking for errors/duplicates in DB #
         name = request.form.get("name")
         if not name:
             code_error = "Name was missing"
