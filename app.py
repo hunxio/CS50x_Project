@@ -30,8 +30,7 @@ def signup():
         cur.execute(
             "CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, lastname TEXT NOT NULL, email TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL);"
         )
-        # TODO: Add more controls to check if the username and/or email already exists.abs
-        emailCheck = cur.execute("SELECT email FROM users;")
+
         # Getting data from inputs and checking for errors/duplicates in DB #
 
         # NAME VALIDATION #
@@ -48,6 +47,8 @@ def signup():
 
         # EMAIL VALIDATION #
         email = request.form.get("email")
+        emailCur = cur.execute("SELECT email FROM users;")
+        emailList = emailCur.fetchall()
         emailValidation = re.search(r"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$", email)
         if not email:
             code_error = "Email was missing"
@@ -55,6 +56,10 @@ def signup():
         elif emailValidation is None:
             code_error = "Invalid email address"
             return render_template("errorpage.html", message=code_error)
+        for _ in range(len(emailList)):
+            if email == emailList[_][0]:
+                code_error = "Email already exists"
+                return render_template("errorpage.html", message=code_error)
 
         # USERNAME VALIDATION #
         username = request.form.get("username")
@@ -63,8 +68,8 @@ def signup():
         if not username:
             code_error = "Username was missing"
             return render_template("errorpage.html", message=code_error)
-        for i in range(len(usernameList)):
-            if username == usernameList[i][0]:
+        for _ in range(len(usernameList)):
+            if username == usernameList[_][0]:
                 code_error = "Username already exists"
                 return render_template("errorpage.html", message=code_error)
 
@@ -94,7 +99,7 @@ def signup():
         )
         con.commit()
         con.close()
-        return render_template("test.html", testtest=usernameList[1][0])
+        return redirect("/")
     return render_template("signup.html")
 
 
