@@ -1,5 +1,4 @@
 import os
-
 import sqlite3
 import re
 import argon2
@@ -7,17 +6,22 @@ from flask import Flask, render_template, redirect, request
 
 app = Flask(__name__)
 
-
+# Homepage #
 @app.route("/")
 def home():
     return render_template("homepage.html")
 
+# Successfully registering an account redirects the user here #
+@app.route("/success")
+def success():
+    return render_template("success.html")
 
+# Whenever one of the validation errors occurs, the user is redirected to this page #
 @app.route("/errorpage")
 def errorpage():
     return render_template("errorpage.html")
 
-
+# Signup page #
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -99,10 +103,10 @@ def signup():
         )
         con.commit()
         con.close()
-        return redirect("/")
+        return redirect("success")
     return render_template("signup.html")
 
-
+# Login page #
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
