@@ -21,24 +21,32 @@ def errorpage():
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
+        # Error code variable #
+        code_error = None
+
         # Database creation and update #
         con = sqlite3.connect("database.db")
         cur = con.cursor()
         cur.execute(
             "CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, lastname TEXT NOT NULL, email TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL);"
         )
-
         # TODO: Add more controls to check if the username and/or email already exists.abs
-
+        emailCheck = cur.execute("SELECT email FROM users;")
         # Getting data from inputs and checking for errors/duplicates in DB #
+
+        # NAME VALIDATION #
         name = request.form.get("name")
         if not name:
             code_error = "Name was missing"
             return render_template("errorpage.html", message=code_error)
+
+        # LAST NAME VALIDATION #
         lastName = request.form.get("lastname")
         if not lastName:
             code_error = "Last Name was missing"
             return render_template("errorpage.html", message=code_error)
+
+        # EMAIL VALIDATION #
         email = request.form.get("email")
         emailValidation = re.search(r"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$", email)
         if not email:
@@ -47,10 +55,20 @@ def signup():
         elif emailValidation is None:
             code_error = "Invalid email address"
             return render_template("errorpage.html", message=code_error)
+
+        # USERNAME VALIDATION #
         username = request.form.get("username")
+        usernameCur = cur.execute("SELECT username FROM users;")
+        usernameList = usernameCur.fetchall()
         if not username:
             code_error = "Username was missing"
             return render_template("errorpage.html", message=code_error)
+        for i in range(len(usernameList)):
+            if username == usernameList[i][0]:
+                code_error = "Username already exists"
+                return render_template("errorpage.html", message=code_error)
+
+        # PASSWORD VALIDATION #
         password = request.form.get("password")
         passwordValidation = re.search(
             r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", password
@@ -76,7 +94,7 @@ def signup():
         )
         con.commit()
         con.close()
-        return redirect("/")
+        return render_template("test.html", testtest=usernameList[1][0])
     return render_template("signup.html")
 
 
