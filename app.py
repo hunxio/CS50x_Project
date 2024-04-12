@@ -3,6 +3,7 @@ import sqlite3
 import re
 import argon2
 from flask import Flask, render_template, redirect, request
+from custom import returnErrorMessage
 
 app = Flask(__name__)
 
@@ -30,9 +31,6 @@ def errorpage():
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        # Error code variable #
-        code_error = None
-
         # Database creation and update #
         con = sqlite3.connect("database.db")
         cur = con.cursor()
@@ -45,16 +43,12 @@ def signup():
         # NAME VALIDATION #
         name = request.form.get("name")
         if not name:
-            code_error = "Name was missing"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
+            return returnErrorMessage(con, "errorpage.html", "Name was missing")
 
         # LAST NAME VALIDATION #
         lastName = request.form.get("lastname")
         if not lastName:
-            code_error = "Last Name was missing"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
+            return returnErrorMessage(con, "errorpage.html", "Last name was missing")
 
         # EMAIL VALIDATION #
         email = request.form.get("email")
@@ -62,32 +56,22 @@ def signup():
         emailList = emailCur.fetchall()
         emailValidation = re.search(r"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$", email)
         if not email:
-            code_error = "Email was missing"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
-        elif emailValidation is None:
-            code_error = "Invalid email address"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
+            return returnErrorMessage(con, "errorpage.html", "Email was missing")
+        if emailValidation is None:
+            return returnErrorMessage(con, "errorpage.html", "Email does not match")
         for _ in range(len(emailList)):
             if email == emailList[_][0]:
-                code_error = "Email already exists"
-                con.close()
-                return render_template("errorpage.html", message=code_error)
+                return returnErrorMessage(con, "errorpage.html", "Email already exists")
 
         # USERNAME VALIDATION #
         username = request.form.get("username")
         usernameCur = cur.execute("SELECT username FROM users;")
         usernameList = usernameCur.fetchall()
         if not username:
-            code_error = "Username was missing"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
+            return returnErrorMessage(con, "errorpage.html", "Username was missing")
         for _ in range(len(usernameList)):
             if username == usernameList[_][0]:
-                code_error = "Username already exists"
-                con.close()
-                return render_template("errorpage.html", message=code_error)
+                return returnErrorMessage(con, "errorpage.html", "Username already exists")
 
         # PASSWORD VALIDATION #
         password = request.form.get("password")
@@ -95,17 +79,11 @@ def signup():
             r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", password
         )
         if not password:
-            code_error = "Password was missing"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
-        elif len(password) < 8 or len(password) > 16:
-            code_error = "Invalid password length"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
-        elif passwordValidation is None:
-            code_error = "Password not valid"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
+            return returnErrorMessage(con, "errorpage.html", "Password was missing")
+        if len(password) < 8 or len(password) > 16:
+            return returnErrorMessage(con, "errorpage.html", "Password must be between 8 and 16 characters long")
+        if passwordValidation is None:
+            return returnErrorMessage(con, "errorpage.html", "Password format is invalid")
 
         # Password hash and salt with argon2 #
         hasher = argon2.PasswordHasher()
@@ -139,33 +117,24 @@ def login():
         usernameCur = cur.execute("SELECT username FROM users;")
         usernameList = usernameCur.fetchall()
         if not username:
-            code_error = "Username was missing"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
+            return returnErrorMessage(con, "errorpage.html", "Username was missing")
         for _ in range(len(usernameList)):
             if username == usernameList[_][0]:
                 usernameFound = usernameList[_][0]
-        if usernameFound is None:
-            code_error = "Username not found"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
-        
+
         # PASSWORD VALIDATION #
         password = request.form.get("password")
 
         # Retrieve password from DB and attribuite it to passwordFound#
         passwordCur = cur.execute("SELECT password FROM users WHERE username = ?;", (usernameFound,))
         passwordOfUser = passwordCur.fetchone()
-        passwordFound = passwordOfUser[0]
+        passwordFound = passwordOfUser
 
         if not password:
-            code_error = "Password was missing"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
-        elif passwordFound is None:
-            code_error = "Password was not found"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
+            return returnErrorMessage(con, "errorpage.html", "Password was missing")
+        
+        if passwordFound is None or usernameFound is None:
+            return returnErrorMessage(con, "errorpage.html", "Invalid username or password")
         
         # Password hash and salt with argon2 for validation #
         hasher = argon2.PasswordHasher()
@@ -177,7 +146,5 @@ def login():
             con.close()
             return redirect("/loginok")
         except argon2.exceptions.VerifyMismatchError:
-            code_error = "Password is incorrect"
-            con.close()
-            return render_template("errorpage.html", message=code_error)
+            return returnErrorMessage(con, "errorpage.html", "Password does not exist")
     return render_template("login.html")
