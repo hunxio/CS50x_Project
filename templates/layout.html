@@ -26,12 +26,42 @@
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <a class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" href="/" alt="Logo"><img
             class="logo-size" src="../static/media/logo-icon.png" alt="Logo" /></a>
-        {% block navbar %} {% endblock %}
+        {% block navbar %} 
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li class="padd-left-fix">Home</li>
+        </ul>
+        <div class="text-end">
+          <a href="/login"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
+          <a href="/signup"><button type="button" class="btn btn-warning">Sign Up</button></a>
+        </div>
+        {% endblock %}
       </div>
     </div>
   </header>
   <!-- MAIN -->
-  {% block main %} {% endblock %}
+  {% block main %} 
+  <div class="px-4 pt-5 my-5-edit text-center border-bottom">
+    <h1 class="display-4 fw-bold text-body-emphasis title-margin-bottom">
+      "Film Lovers Unite: Share, Discover, Enjoy!"
+    </h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">
+        Discover the Ultimate Movie Experience with MoviesDB – Your Premier
+        Destination for Building and Sharing Your Personal Film Collection! Sign
+        up for free, tailor your profile to reflect your unique tastes, and dive
+        into a world of cinematic exploration. Start adding all your favorite
+        movies and share the magic with fellow film enthusiasts worldwide!
+      </p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5"></div>
+    </div>
+    <div class="overflow-hidden" style="max-height: 30vh">
+      <div class="container px-5">
+        <img src="../static/media/assorted-movie-image.jpeg" class="img-fluid border rounded-3 shadow-lg mb-4"
+          alt="Assorte movies image" width="800" height="700" loading="lazy" />
+      </div>
+    </div>
+  </div>
+  {% endblock %}
 
   <!-- FOOTER -->
   <footer class="d-flex flex-wrap justify-content-between align-items-center testtest">
