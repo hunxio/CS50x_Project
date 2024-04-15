@@ -151,16 +151,15 @@ def login():
         if not password:
             return returnErrorMessage(con, "errorpage.html", "Password was missing")
 
-        # Retrieve password from DB and attribuite it to passwordFound#
+        # Retrieve password from DB and attribuite it to passwordFound #
         passwordCur = cur.execute(
             "SELECT password FROM users WHERE username = ?;", (usernameFound,)
         )
-        passwordOfUser = passwordCur.fetchone()
-        passwordFound = passwordOfUser[0]
-        if passwordFound is None or usernameFound is None:
-            return returnErrorMessage(
-                con, "errorpage.html", "Invalid username or password"
-            )
+        try:
+            passwordOfUser = passwordCur.fetchone()
+            passwordFound = passwordOfUser[0]
+        except TypeError:
+            return returnErrorMessage(con, "errorpage.html", "Invalid username or password")
 
         # Password hash and salt with argon2 for validation #
         hasher = argon2.PasswordHasher()
