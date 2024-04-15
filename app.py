@@ -20,12 +20,11 @@ Session(app)
 def home():
     return render_template("homepage.html")
 
-
-# FIXME: Test page for successful login, not established a session yet
-@app.route("/loginok")
-def loginok():
-    return render_template("loginok.html")
-
+# Log Out #
+@app.route("/logout")
+def logout():
+    session["name"] = None
+    return redirect("/")
 
 # Successfully registering an account redirects the user here #
 @app.route("/success")
@@ -174,7 +173,7 @@ def login():
         try:
             hasher.verify(passwordFound, password)
             con.close()
-            return redirect("/loginok")
+            return redirect("/")
         except argon2.exceptions.VerifyMismatchError:
-            return returnErrorMessage(con, "errorpage.html", "Password does not exist")
+            return returnErrorMessage(con, "errorpage.html", "Password does not match ")
     return render_template("login.html")
