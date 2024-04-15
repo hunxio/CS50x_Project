@@ -4,26 +4,39 @@ import re
 import argon2
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
-
 from personaldefs import returnErrorMessage
 
 app = Flask(__name__)
+
 app.config["SESSION_PERMANENT"] = (
     False  # The session will have a default lifetime which will expire
 )
 app.config["SESSION_TYPE"] = "filesystem"  # It will store the session in the filesystem
 Session(app)
 
+@app.after_request
+def after_request(response):
+    """Ensure responses aren't cached"""
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = 0
+    response.headers["Pragma"] = "no-cache"
+    return response
 
 # Homepage #
 @app.route("/")
 def home():
     return render_template("homepage.html")
 
+@app.route("/layout")
+def index():
+    if not session.get("username"):
+        return redirect("/homepage")
+    return render_template("layout.html")
+
 # Log Out #
 @app.route("/logout")
 def logout():
-    session["name"] = None
+    session.clear()
     return redirect("/")
 
 # Successfully registering an account redirects the user here #
@@ -31,12 +44,16 @@ def logout():
 def success():
     return render_template("success.html")
 
+@app.route("/testpage")
+def testpage():
+    if not session.get("username"):
+        return returnErrorMessage(con, "errorpage.html", "You are not logged in")
+    return render_template("testpage.html")
 
 # Whenever one of the validation errors occurs, the user is redirected to this page #
 @app.route("/errorpage")
 def errorpage():
     return render_template("errorpage.html")
-
 
 # Signup page #
 @app.route("/signup", methods=["GET", "POST"])
