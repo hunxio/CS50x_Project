@@ -2,11 +2,15 @@ import os
 import sqlite3
 import re
 import argon2
-from flask import Flask, render_template, redirect, request
-from custom import returnErrorMessage
+from flask import Flask, render_template, redirect, request, session
+from flask_session import Session
+
+from personaldefs import returnErrorMessage
 
 app = Flask(__name__)
-
+app.config["SESSION_PERMANENT"] = False  # The session will have a default lifetime which will expire 
+app.config["SESSION_TYPE"] = "filesystem" #It will store the session in the filesystem
+Session(app)
 
 # Homepage #
 @app.route("/")
@@ -125,14 +129,14 @@ def login():
         # Variables #
         passwordFound = None
         usernameFound = None
-        code_error = None
 
         # Database connection #
         con = sqlite3.connect("database.db")
         cur = con.cursor()
 
         # USERNAME VALIDATION #
-        username = request.form.get("username")
+        session["username"] = request.form.get("username")
+        username = session["username"]
         if not username:
             return returnErrorMessage(con, "errorpage.html", "Username was missing")
 
@@ -152,7 +156,7 @@ def login():
             "SELECT password FROM users WHERE username = ?;", (usernameFound,)
         )
         passwordOfUser = passwordCur.fetchone()
-        passwordFound = passwordOfUser
+        passwordFound = passwordOfUser[0]
         if passwordFound is None or usernameFound is None:
             return returnErrorMessage(
                 con, "errorpage.html", "Invalid username or password"
