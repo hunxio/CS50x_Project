@@ -8,9 +8,12 @@ from flask_session import Session
 from personaldefs import returnErrorMessage
 
 app = Flask(__name__)
-app.config["SESSION_PERMANENT"] = False  # The session will have a default lifetime which will expire 
-app.config["SESSION_TYPE"] = "filesystem" #It will store the session in the filesystem
+app.config["SESSION_PERMANENT"] = (
+    False  # The session will have a default lifetime which will expire
+)
+app.config["SESSION_TYPE"] = "filesystem"  # It will store the session in the filesystem
 Session(app)
+
 
 # Homepage #
 @app.route("/")
@@ -159,7 +162,9 @@ def login():
             passwordOfUser = passwordCur.fetchone()
             passwordFound = passwordOfUser[0]
         except TypeError:
-            return returnErrorMessage(con, "errorpage.html", "Invalid username or password")
+            return returnErrorMessage(
+                con, "errorpage.html", "Invalid username or password"
+            )
 
         # Password hash and salt with argon2 for validation #
         hasher = argon2.PasswordHasher()
