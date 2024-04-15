@@ -4,25 +4,34 @@
 {% block title %} Home {% endblock %}
 
 <!-- HEADER > NAV BAR-->
+{% if session.username %}
 {% block navbar %}
-<ul
-  class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
->
+<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+  <li class="padd-left-fix">{{ session.username }}'s Profile</li>
+</ul>
+
+<div class="text-end">
+  <a href="/login"><button type="button" class="btn btn-outline-light me-2">Settings</button></a>
+  <a href="/signup"><button type="button" class="btn btn-warning">Log Out</button></a>
+</div>
+{% endblock %}
+{% else %}
+<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
   <li class="padd-left-fix">Home</li>
 </ul>
 
 <div class="text-end">
-  <a href="/login"
-    ><button type="button" class="btn btn-outline-light me-2">Login</button></a
-  >
-  <a href="/signup"
-    ><button type="button" class="btn btn-warning">Sign Up</button></a
-  >
+  <a href="/login"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
+  <a href="/signup"><button type="button" class="btn btn-warning">Sign Up</button></a>
 </div>
-{% endblock %}
+{% endif %}
 
 <!-- MAIN -->
-{%block main%}
+{% if session.username %} 
+{% block main %}
+<h1>Welcome {{ session.username }} !</h1>
+{% endblock %} 
+{% else %}
 <div class="px-4 pt-5 my-5-edit text-center border-bottom">
   <h1 class="display-4 fw-bold text-body-emphasis title-margin-bottom">
     "Film Lovers Unite: Share, Discover, Enjoy!"
@@ -39,15 +48,9 @@
   </div>
   <div class="overflow-hidden" style="max-height: 30vh">
     <div class="container px-5">
-      <img
-        src="../static/media/assorted-movie-image.jpeg"
-        class="img-fluid border rounded-3 shadow-lg mb-4"
-        alt="Assorte movies image"
-        width="800"
-        height="700"
-        loading="lazy"
-      />
+      <img src="../static/media/assorted-movie-image.jpeg" class="img-fluid border rounded-3 shadow-lg mb-4"
+        alt="Assorte movies image" width="800" height="700" loading="lazy" />
     </div>
   </div>
 </div>
-{% endblock %}
+{% endif %}
