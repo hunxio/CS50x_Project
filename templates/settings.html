@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %} Settings {% endblock %}
+
+{% block navbar %}
+{% if session.username %}
+<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+  <li class="padd-left-fix">{{ session.username }}'s Settings</li>
+</ul>
+
+<div class="text-end">
+  <a href="#"><button type="button" class="btn btn-outline-light me-2">Collection</button></a>
+  <a href="/testpage"><button type="button" class="btn btn-outline-light me-2">Test</button></a>
+  <a href="/logout"><button type="button" class="btn btn-warning">Log Out</button></a>
+</div>
+{% else %}
+<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+  <li class="padd-left-fix">Home</li>
+</ul>
+<div class="text-end">
+  <a href="/login"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
+  <a href="/signup"><button type="button" class="btn btn-warning">Sign Up</button></a>
+</div>
+{% endif %}
+{% endblock %}
