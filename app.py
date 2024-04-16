@@ -198,3 +198,13 @@ def login():
             session.clear()
             return ErrorConnection(con, "errorpage.html", "Password does not match ")
     return render_template("login.html")
+
+
+@app.route("/settings", methods=["GET", "POST"])
+def setting():
+    if not session.get("username"):
+        return ErrorTemplate("errorpage.html", "You are not logged in")
+        
+    if request.method == "POST":
+        return redirect("/")
+    return render_template("settings.html")
