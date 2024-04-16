@@ -157,6 +157,7 @@ def login():
         session["username"] = request.form.get("username")
         username = session["username"]
         if not username:
+            session.clear()
             return returnErrorMessage(con, "errorpage.html", "Username was missing")
 
         usernameCur = cur.execute("SELECT username FROM users;")
@@ -168,6 +169,7 @@ def login():
         # PASSWORD VALIDATION #
         password = request.form.get("password")
         if not password:
+            session.clear()
             return returnErrorMessage(con, "errorpage.html", "Password was missing")
 
         # Retrieve password from DB and attribuite it to passwordFound #
@@ -178,6 +180,7 @@ def login():
             passwordOfUser = passwordCur.fetchone()
             passwordFound = passwordOfUser[0]
         except TypeError:
+            session.clear()
             return returnErrorMessage(
                 con, "errorpage.html", "Invalid username or password"
             )
@@ -192,5 +195,6 @@ def login():
             con.close()
             return redirect("/")
         except argon2.exceptions.VerifyMismatchError:
+            session.clear()
             return returnErrorMessage(con, "errorpage.html", "Password does not match ")
     return render_template("login.html")
