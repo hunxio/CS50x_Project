@@ -7,13 +7,18 @@
     font-family: "Montserrat", sans-serif;
 }
 .no-decoration {
-    text-decoration: none;
-    color: white;
+    text-decoration: none !important;
+    color: white !important;
 }
 
 .text-color {
     color: var(--dark-blue);
 }
+
+.text-color {
+    color: var(--dark-blue);
+}
+
 .logo-size {
     width: 40px;
     height: 40px;
