@@ -4,7 +4,7 @@ import re
 import argon2
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
-from personaldefs import returnErrorMessage
+from personaldefs import ErrorTemplate, ErrorConnection
 
 app = Flask(__name__)
 
@@ -47,7 +47,7 @@ def success():
 @app.route("/testpage")
 def testpage():
     if not session.get("username"):
-        return returnErrorMessage(con, "errorpage.html", "You are not logged in")
+        return ErrorTemplate("errorpage.html", "You are not logged in")
     return render_template("testpage.html")
 
 # Whenever one of the validation errors occurs, the user is redirected to this page #
@@ -71,48 +71,48 @@ def signup():
         # NAME VALIDATION #
         name = request.form.get("name")
         if not name:
-            return returnErrorMessage(con, "errorpage.html", "Name was missing")
+            return ErrorConnection(con, "errorpage.html", "Name was missing")
 
         # LAST NAME VALIDATION #
         lastName = request.form.get("lastname")
         if not lastName:
-            return returnErrorMessage(con, "errorpage.html", "Last name was missing")
+            return ErrorConnection(con, "errorpage.html", "Last name was missing")
 
         # EMAIL VALIDATION #
         email = request.form.get("email")
         if not email:
-            return returnErrorMessage(con, "errorpage.html", "Email was missing")
+            return ErrorConnection(con, "errorpage.html", "Email was missing")
 
         emailValidation = re.search(r"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$", email)
         if emailValidation is None:
-            return returnErrorMessage(con, "errorpage.html", "Email does not match")
+            return ErrorConnection(con, "errorpage.html", "Email does not match")
 
         emailCur = cur.execute("SELECT email FROM users;")
         emailList = emailCur.fetchall()
         for _ in range(len(emailList)):
             if email == emailList[_][0]:
-                return returnErrorMessage(con, "errorpage.html", "Email already exists")
+                return ErrorConnection(con, "errorpage.html", "Email already exists")
 
         # USERNAME VALIDATION #
         username = request.form.get("username")
         if not username:
-            return returnErrorMessage(con, "errorpage.html", "Username was missing")
+            return ErrorConnection(con, "errorpage.html", "Username was missing")
 
         usernameCur = cur.execute("SELECT username FROM users;")
         usernameList = usernameCur.fetchall()
         for _ in range(len(usernameList)):
             if username == usernameList[_][0]:
-                return returnErrorMessage(
+                return ErrorConnection(
                     con, "errorpage.html", "Username already exists"
                 )
 
         # PASSWORD VALIDATION #
         password = request.form.get("password")
         if not password:
-            return returnErrorMessage(con, "errorpage.html", "Password was missing")
+            return ErrorConnection(con, "errorpage.html", "Password was missing")
 
         if len(password) < 8 or len(password) > 16:
-            return returnErrorMessage(
+            return ErrorConnection(
                 con,
                 "errorpage.html",
                 "Password must be between 8 and 16 characters long",
@@ -122,7 +122,7 @@ def signup():
             r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", password
         )
         if passwordValidation is None:
-            return returnErrorMessage(
+            return ErrorConnection(
                 con, "errorpage.html", "Password format is invalid"
             )
 
@@ -158,7 +158,7 @@ def login():
         username = session["username"]
         if not username:
             session.clear()
-            return returnErrorMessage(con, "errorpage.html", "Username was missing")
+            return ErrorConnection(con, "errorpage.html", "Username was missing")
 
         usernameCur = cur.execute("SELECT username FROM users;")
         usernameList = usernameCur.fetchall()
@@ -170,7 +170,7 @@ def login():
         password = request.form.get("password")
         if not password:
             session.clear()
-            return returnErrorMessage(con, "errorpage.html", "Password was missing")
+            return ErrorConnection(con, "errorpage.html", "Password was missing")
 
         # Retrieve password from DB and attribuite it to passwordFound #
         passwordCur = cur.execute(
@@ -181,7 +181,7 @@ def login():
             passwordFound = passwordOfUser[0]
         except TypeError:
             session.clear()
-            return returnErrorMessage(
+            return ErrorConnection(
                 con, "errorpage.html", "Invalid username or password"
             )
 
@@ -196,5 +196,5 @@ def login():
             return redirect("/")
         except argon2.exceptions.VerifyMismatchError:
             session.clear()
-            return returnErrorMessage(con, "errorpage.html", "Password does not match ")
+            return ErrorConnection(con, "errorpage.html", "Password does not match ")
     return render_template("login.html")
