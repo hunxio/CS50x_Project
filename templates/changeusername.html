@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+<!-- TITLE -->
+{% block title %} Change Username {% endblock %}
+
+<!-- HEADER > NAV BAR-->
+{% block navbar %}
+{% if session.username %}
+<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+  <li class="padd-left-fix">{{ session.username }}'s Settings: Change Username</li>
+</ul>
+
+<div class="text-end">
+  <a href="/settings"><button type="button" class="btn btn-outline-light me-2">Settings</button></a>
+  <a href="/logout"><button type="button" class="btn btn-warning">Log Out</button></a>
+</div>
+{% endif %}
+{% endblock %}
+
+<!-- MAIN -->
+{% block main %}
+<form aciton="/changeUsername" method="post" class="form-styles2">
+  <div class="row mb-3">
+    <label for="inputNewUsername" class="col-sm-2 col-form-label">New Username</label>
+    <div class="col-sm-10">
+      <input type="text" autocomplete="off" autofocus required class="form-control" id="inputNewPassword" name="newUsername">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="inputConfirmPassword" class="col-sm-2 col-form-label">Confirm Username</label>
+    <div class="col-sm-10">
+      <input type="text" autocomplete="off" required class="form-control" id="inputConfirmUsername" name="confirmUsername">
+    </div>
+  </div>
+  <div class="centering-element top-pdd2rem">
+    <button type="submit" class="btn btn-login-style me-2">Confirm</button>
+  </div>
+</form>
+{% endblock %} 
