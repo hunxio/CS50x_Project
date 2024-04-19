@@ -10,7 +10,7 @@
 
 <div class="text-end">
   <a href="#"><button type="button" class="btn btn-outline-light me-2">Collection</button></a>
-  <a href="/testpage"><button type="button" class="btn btn-outline-light me-2">Test</button></a>
+  <a href="/changepassword"><button type="button" class="btn btn-outline-light me-2">Test</button></a>
   <a href="/logout"><button type="button" class="btn btn-warning">Log Out</button></a>
 </div>
 {% else %}
@@ -20,6 +20,18 @@
 <div class="text-end">
   <a href="/login"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
   <a href="/signup"><button type="button" class="btn btn-warning">Sign Up</button></a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block main %}
+{% if session.username %}
+<div class="centering-element error-window testtest">
+  <a href="/changeusername"><h1>Change Username</h1></a>
+  <p>Click the link above to reset your username and choose a new one</p>
+  <br>
+  <a href="/changepassword"><h1>Change Password</h1></a>
+  <p>Click the link above to reset your password and choose a new one</p>
 </div>
 {% endif %}
 {% endblock %}
