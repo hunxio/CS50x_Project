@@ -65,50 +65,49 @@ def signup():
         # NAME VALIDATION #
         name = request.form.get("name")
         if not name:
-            return ErrorConnection(con, "errorpage.html", "Name was missing")
+            return ErrorConnection(con, "Name was missing")
 
         # LAST NAME VALIDATION #
         lastName = request.form.get("lastname")
         if not lastName:
-            return ErrorConnection(con, "errorpage.html", "Last name was missing")
+            return ErrorConnection(con, "Last name was missing")
 
         # EMAIL VALIDATION #
         email = request.form.get("email")
         if not email:
-            return ErrorConnection(con, "errorpage.html", "Email was missing")
+            return ErrorConnection(con, "Email was missing")
 
         emailValidation = re.search(r"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$", email)
         if emailValidation is None:
-            return ErrorConnection(con, "errorpage.html", "Email does not match")
+            return ErrorConnection(con, "Email does not match")
 
         emailCur = cur.execute("SELECT email FROM users;")
         emailList = emailCur.fetchall()
         for _ in range(len(emailList)):
             if email == emailList[_][0]:
-                return ErrorConnection(con, "errorpage.html", "Email already exists")
+                return ErrorConnection(con, "Email already exists")
 
         # USERNAME VALIDATION #
         username = request.form.get("username")
         if not username:
-            return ErrorConnection(con, "errorpage.html", "Username was missing")
+            return ErrorConnection(con, "Username was missing")
 
         usernameCur = cur.execute("SELECT username FROM users;")
         usernameList = usernameCur.fetchall()
         for _ in range(len(usernameList)):
             if username == usernameList[_][0]:
                 return ErrorConnection(
-                    con, "errorpage.html", "Username already exists"
+                    con, "Username already exists"
                 )
 
         # PASSWORD VALIDATION #
         password = request.form.get("password")
         if not password:
-            return ErrorConnection(con, "errorpage.html", "Password was missing")
+            return ErrorConnection(con, "Password was missing")
 
         if len(password) < 8 or len(password) > 16:
             return ErrorConnection(
                 con,
-                "errorpage.html",
                 "Password must be between 8 and 16 characters long",
             )
 
@@ -117,7 +116,7 @@ def signup():
         )
         if passwordValidation is None:
             return ErrorConnection(
-                con, "errorpage.html", "Password format is invalid"
+                con, "Password format is invalid"
             )
 
         # Password hash and salt with argon2 #
@@ -152,7 +151,7 @@ def login():
         username = session["username"]
         if not username:
             session.clear()
-            return ErrorConnection(con, "errorpage.html", "Username was missing")
+            return ErrorConnection(con, "Username was missing")
 
         usernameCur = cur.execute("SELECT username FROM users;")
         usernameList = usernameCur.fetchall()
@@ -164,7 +163,7 @@ def login():
         password = request.form.get("password")
         if not password:
             session.clear()
-            return ErrorConnection(con, "errorpage.html", "Password was missing")
+            return ErrorConnection(con, "Password was missing")
 
         # Retrieve password from DB and attribuite it to passwordFound #
         passwordCur = cur.execute(
@@ -176,7 +175,7 @@ def login():
         except TypeError:
             session.clear()
             return ErrorConnection(
-                con, "errorpage.html", "Invalid username or password"
+                con, "Invalid username or password"
             )
 
         # Password hash and salt with argon2 for validation #
@@ -190,14 +189,14 @@ def login():
             return redirect("/")
         except argon2.exceptions.VerifyMismatchError:
             session.clear()
-            return ErrorConnection(con, "errorpage.html", "Password does not match ")
+            return ErrorConnection(con, "Password does not match ")
     return render_template("login.html")
 
 
 @app.route("/settings", methods=["GET", "POST"])
 def setting():
     if not session.get("username"):
-        return ErrorTemplate("errorpage.html", "You are not logged in")
+        return ErrorTemplate("You are not logged in")
         
     if request.method == "POST":
         return redirect("/")
@@ -207,11 +206,11 @@ def setting():
 @app.route("/changepassword")
 def changePassword():
     if not session.get("username"):
-        return ErrorTemplate("errorpage.html", "You are not logged in")
+        return ErrorTemplate("You are not logged in")
     return render_template("changepassword.html")
 
 @app.route("/changeusername")
 def changeusername():
     if not session.get("username"):
-        return ErrorTemplate("errorpage.html", "You are not logged in")
+        return ErrorTemplate("You are not logged in")
     return render_template("changeusername.html")
