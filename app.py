@@ -44,12 +44,6 @@ def logout():
 def success():
     return render_template("success.html")
 
-@app.route("/testpage")
-def testpage():
-    if not session.get("username"):
-        return ErrorTemplate("errorpage.html", "You are not logged in")
-    return render_template("testpage.html")
-
 # Whenever one of the validation errors occurs, the user is redirected to this page #
 @app.route("/errorpage")
 def errorpage():
@@ -208,3 +202,16 @@ def setting():
     if request.method == "POST":
         return redirect("/")
     return render_template("settings.html")
+
+
+@app.route("/changepassword")
+def changePassword():
+    if not session.get("username"):
+        return ErrorTemplate("errorpage.html", "You are not logged in")
+    return render_template("changepassword.html")
+
+@app.route("/changeusername")
+def changeusername():
+    if not session.get("username"):
+        return ErrorTemplate("errorpage.html", "You are not logged in")
+    return render_template("changeusername.html")
