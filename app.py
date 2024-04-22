@@ -4,7 +4,7 @@ import re
 import argon2
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
-from personaldefs import ErrorTemplate, ErrorConnection
+from personaldefs import ErrorTemplate, ErrorConnection, acquireSessionEmail
 
 app = Flask(__name__)
 
@@ -14,6 +14,7 @@ app.config["SESSION_PERMANENT"] = (
 app.config["SESSION_TYPE"] = "filesystem"  # It will store the session in the filesystem
 Session(app)
 
+
 @app.after_request
 def after_request(response):
     """Ensure responses aren't cached"""
@@ -22,10 +23,18 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+
 # Homepage #
 @app.route("/")
 def home():
-    return render_template("homepage.html")
+    if not session.get("email"):
+        return render_template("homepage.html")
+
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
+    userUsername = acquireSessionEmail(cur)
+    return render_template("homepage.html", username=userUsername)
+
 
 @app.route("/layout")
 def index():
@@ -33,21 +42,25 @@ def index():
         return redirect("/homepage")
     return render_template("layout.html")
 
+
 # Log Out #
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
 
+
 # Successfully registering an account redirects the user here #
 @app.route("/success")
 def success():
     return render_template("success.html")
 
+
 # Whenever one of the validation errors occurs, the user is redirected to this page #
 @app.route("/errorpage")
 def errorpage():
     return render_template("errorpage.html")
+
 
 # Signup page #
 @app.route("/signup", methods=["GET", "POST"])
@@ -94,16 +107,15 @@ def signup():
         if len(username) > 10 or len(username) < 4:
             session.clear()
             return ErrorConnection(
-                con, "Username must be between 4 and 10 characters long, plese try again."
+                con,
+                "Username must be between 4 and 10 characters long, plese try again.",
             )
 
         usernameCur = cur.execute("SELECT username FROM users;")
         usernameList = usernameCur.fetchall()
         for _ in range(len(usernameList)):
             if username == usernameList[_][0]:
-                return ErrorConnection(
-                    con, "Username already exists"
-                )
+                return ErrorConnection(con, "Username already exists")
 
         # PASSWORD VALIDATION #
         password = request.form.get("password")
@@ -120,9 +132,7 @@ def signup():
             r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", password
         )
         if passwordValidation is None:
-            return ErrorConnection(
-                con, "Password format is invalid"
-            )
+            return ErrorConnection(con, "Password format is invalid")
 
         # Password hash and salt with argon2 #
         hasher = argon2.PasswordHasher()
@@ -144,25 +154,25 @@ def signup():
 def login():
     if request.method == "POST":
         # Variables #
+        emailFound = None
         passwordFound = None
-        usernameFound = None
 
         # Database connection #
         con = sqlite3.connect("database.db")
         cur = con.cursor()
 
         # USERNAME VALIDATION #
-        session["username"] = request.form.get("username")
-        username = session["username"]
-        if not username:
+        session["email"] = request.form.get("email")
+        email = session["email"]
+        if not email:
             session.clear()
-            return ErrorConnection(con, "Username was missing")
+            return ErrorConnection(con, "Email was missing")
 
-        usernameCur = cur.execute("SELECT username FROM users;")
-        usernameList = usernameCur.fetchall()
-        for _ in range(len(usernameList)):
-            if username == usernameList[_][0]:
-                usernameFound = usernameList[_][0]
+        emailCur = cur.execute("SELECT email FROM users;")
+        emailList = emailCur.fetchall()
+        for _ in range(len(emailList)):
+            if email == emailList[_][0]:
+                emailFound = emailList[_][0]
 
         # PASSWORD VALIDATION #
         password = request.form.get("password")
@@ -172,16 +182,14 @@ def login():
 
         # Retrieve password from DB and attribuite it to passwordFound #
         passwordCur = cur.execute(
-            "SELECT password FROM users WHERE username = ?;", (usernameFound,)
+            "SELECT password FROM users WHERE email = ?;", (emailFound,)
         )
         try:
             passwordOfUser = passwordCur.fetchone()
             passwordFound = passwordOfUser[0]
         except TypeError:
             session.clear()
-            return ErrorConnection(
-                con, "Invalid username or password"
-            )
+            return ErrorConnection(con, "Invalid email or password")
 
         # Password hash and salt with argon2 for validation #
         hasher = argon2.PasswordHasher()
@@ -200,40 +208,72 @@ def login():
 
 @app.route("/settings", methods=["GET", "POST"])
 def setting():
-    if not session.get("username"):
+    if not session.get("email"):
         return ErrorTemplate("You are not logged in")
-        
-    if request.method == "POST":
-        return redirect("/")
-    return render_template("settings.html")
+
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
+    userUsername = acquireSessionEmail(cur)
+    return render_template("settings.html", username=userUsername)
 
 
 @app.route("/changepassword")
 def changePassword():
-    if not session.get("username"):
+    if not session.get("email"):
         return ErrorTemplate("You are not logged in")
-    return render_template("changepassword.html")
+
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
+    userUsername = acquireSessionEmail(cur)
+    return render_template("changepassword.html", username=userUsername)
+
 
 @app.route("/changeusername", methods=["GET", "POST"])
 def changeusername():
-    
+
     # If user not logged in, it will be redirected to error page #
-    if not session.get("username"):
+    if not session.get("email"):
         return ErrorTemplate("You are not logged in")
-    
+
     if request.method == "POST":
         # Database connection #
         con = sqlite3.connect("database.db")
         cur = con.cursor()
 
-        newUsername = session.get("newUsername")
+        # Session Username #
+
+        sessionUsername = acquireSessionEmail(cur)
+
+        # USERNAME VALIDATION #
+        newUsername = request.form.get("newUsername")
         if not newUsername:
             return ErrorConnection(con, "No username provided")
-        if newUsername > 10 or newUsername < 4:
+        if len(newUsername) > 10 or len(newUsername) < 4:
             return ErrorConnection(
-                con, "Username must be between 4 and 10 characters long"
+                con, "The new username must be between 4 and 10 characters long"
             )
-        
-        
+        # CONFIRM USERNAME VALIDATION #
+        confirmUsername = request.form.get("confirmUsername")
+        if not confirmUsername:
+            return ErrorConnection(con, "No username provided for confirmation")
+        if newUsername != confirmUsername:
+            return ErrorConnection(con, "Usernames does not match")
+
+        # CHECKING IF USERNAME ALREADY EXISTS #
+        usernameCur = cur.execute("SELECT username FROM users;")
+        usernameList = usernameCur.fetchall()
+        for _ in range(len(usernameList)):
+            if newUsername == usernameList[_][0]:
+                return ErrorConnection(con, "Username already exists")
+        updateUsername = cur.execute(
+            "UPDATE users SET username = ? WHERE username = ?;",
+            (newUsername, sessionUsername),
+        )
+        con.commit()
+        con.close()
         return redirect("/")
-    return render_template("changeusername.html")
+
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
+    userUsername = acquireSessionEmail(cur)
+    return render_template("changeusername.html", username=userUsername)
