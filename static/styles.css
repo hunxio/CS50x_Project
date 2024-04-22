@@ -1,6 +1,7 @@
 :root {
     --dark-grey: #495057;
     --dark-blue: #212529;
+    --yellow-btn: #FFC107;
 }
 
 * {
@@ -89,6 +90,11 @@ footer{
     height: 400px;
 }
 
-.testtest {
-    margin: 0 auto;
+.btn-color {
+    background-color: var(--dark-blue) !important;
+    border: var(--dark-blue) !important;
+}
+
+.btn-color:hover {
+    background-color: var(--yellow-btn) !important;
 }
