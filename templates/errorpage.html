@@ -7,7 +7,7 @@
 
 <!-- HEADER > NAV BAR -->   
 {% block navbar %}
-{% if session.username %}
+{% if session.email %}
 <ul
   class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
 >
@@ -15,6 +15,9 @@
 </ul>
 
 <div class="text-end">
+  <a href="/settings"
+  ><button type="button" class="btn btn-outline-light me-2">Settings</button></a
+>
   <a href="/logout"
     ><button type="button" class="btn btn-warning">Log Out</button></a
   >
