@@ -7,6 +7,19 @@
 
 <!-- HEADER > NAV BAR -->   
 {% block navbar %}
+{% if session.username %}
+<ul
+  class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+>
+  <li class="padd-left-fix">Whoops!</li>
+</ul>
+
+<div class="text-end">
+  <a href="/logout"
+    ><button type="button" class="btn btn-warning">Log Out</button></a
+  >
+</div>
+{% else %}
 <ul
   class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
 >
@@ -21,6 +34,7 @@
     ><button type="button" class="btn btn-warning">Sign Up</button></a
   >
 </div>
+{% endif %}
 {% endblock %}
 
 <!-- MAIN -->

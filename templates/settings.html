@@ -3,9 +3,9 @@
 {% block title %} Settings {% endblock %}
 
 {% block navbar %}
-{% if session.username %}
+{% if session.email %}
 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-  <li class="padd-left-fix">{{ session.username }}'s Settings</li>
+  <li class="padd-left-fix">{{ username }}'s Settings</li>
 </ul>
 
 <div class="text-end">
@@ -24,11 +24,11 @@
 {% endblock %}
 
 {% block main %}
-{% if session.username %}
+{% if session.email %}
 <div class="px-4 py-5 my-5 text-center">
   <img class="d-block mx-auto mb-4" src="../static/media/logo-icon.png" alt="logo-img" width="80" height="80">
   <div class="col-lg-6 mx-auto">
-    <p class="lead mb-4">Welcome {{session.username}} to your settings page, here you can change your password or username (as longs as the new username is available).</p>
+    <p class="lead mb-4">Welcome {{ username }} to your settings page, here you can change your password or username (as longs as the new username is available).</p>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
       <a href="/changeusername"><button type="button" class="btn btn-primary btn-lg px-4 gap-3 btn-color">Change Username</button></a>
       <a href="/changepassword"><button type="button" class="btn btn-primary btn-lg px-4 gap-3 btn-color">Change Password</button></a>
