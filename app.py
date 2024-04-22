@@ -230,18 +230,16 @@ def changePassword():
 
 @app.route("/changeusername", methods=["GET", "POST"])
 def changeusername():
+    # Database connection #
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
 
     # If user not logged in, it will be redirected to error page #
     if not session.get("email"):
         return ErrorTemplate("You are not logged in")
 
     if request.method == "POST":
-        # Database connection #
-        con = sqlite3.connect("database.db")
-        cur = con.cursor()
-
         # Session Username #
-
         sessionUsername = acquireSessionEmail(cur)
 
         # USERNAME VALIDATION #
@@ -273,7 +271,6 @@ def changeusername():
         con.close()
         return redirect("/")
 
-    con = sqlite3.connect("database.db")
-    cur = con.cursor()
     userUsername = acquireSessionEmail(cur)
+    con.close()
     return render_template("changeusername.html", username=userUsername)
