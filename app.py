@@ -91,6 +91,11 @@ def signup():
         username = request.form.get("username")
         if not username:
             return ErrorConnection(con, "Username was missing")
+        if len(username) > 10 or len(username) < 4:
+            session.clear()
+            return ErrorConnection(
+                con, "Username must be between 4 and 10 characters long, plese try again."
+            )
 
         usernameCur = cur.execute("SELECT username FROM users;")
         usernameList = usernameCur.fetchall()
@@ -209,8 +214,26 @@ def changePassword():
         return ErrorTemplate("You are not logged in")
     return render_template("changepassword.html")
 
-@app.route("/changeusername")
+@app.route("/changeusername", methods=["GET", "POST"])
 def changeusername():
+    
+    # If user not logged in, it will be redirected to error page #
     if not session.get("username"):
         return ErrorTemplate("You are not logged in")
+    
+    if request.method == "POST":
+        # Database connection #
+        con = sqlite3.connect("database.db")
+        cur = con.cursor()
+
+        newUsername = session.get("newUsername")
+        if not newUsername:
+            return ErrorConnection(con, "No username provided")
+        if newUsername > 10 or newUsername < 4:
+            return ErrorConnection(
+                con, "Username must be between 4 and 10 characters long"
+            )
+        
+        
+        return redirect("/")
     return render_template("changeusername.html")
