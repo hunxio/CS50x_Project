@@ -4,7 +4,7 @@ import re
 import argon2
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
-from personaldefs import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword
+from utils import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword
 
 app = Flask(__name__)
 
