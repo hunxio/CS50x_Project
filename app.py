@@ -301,7 +301,7 @@ def changeusername():
         if not confirmUsername:
             return ErrorConnection(con, "No username provided for confirmation")
         if newUsername != confirmUsername:
-            return ErrorConnection(con, "Usernames does not match")
+            return ErrorConnection(con, "Username does not match")
 
         # CHECKING IF USERNAME ALREADY EXISTS #
         usernameCur = cur.execute("SELECT username FROM users;")
