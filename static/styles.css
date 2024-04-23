@@ -58,11 +58,20 @@
   padding-top: 2rem;
 }
 
+#personalpage-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+#personalcontent-wrap {
+  padding-bottom: 2.5rem;    /* Footer height */
+}
+
 footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 3rem;
+  height: 2.5rem; 
 }
 
 .form-styles {
