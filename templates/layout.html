@@ -20,6 +20,7 @@
 </head>
 
 <body>
+  <div id="personalpage-container">
   <!-- HEADER -->
   <header class="p-3 text-bg-dark">
     <div class="container">
@@ -39,9 +40,10 @@
     </div>
   </header>
   <!-- MAIN -->
+    <div id="personalcontent-wrap">
   {% block main %}
   {% endblock %}
-
+    </div>
   <!-- FOOTER -->
   <footer class="d-flex flex-wrap justify-content-between align-items-center">
     <p class="padd-left-fix col-md-4 mb-0 text-body-secondary">
@@ -53,6 +55,7 @@
       <img class="logo-size" src="../static/media/logo-icon.png" alt="Logo" />
     </a>
   </footer>
+  </div>
 </body>
 
 </html>
