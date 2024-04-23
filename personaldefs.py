@@ -1,6 +1,7 @@
 import os
 import sqlite3
 from flask import Flask, render_template, redirect, request, session
+import argon2
 
 # It will close the database connection and return an error page #
 def ErrorConnection(con, code_error):
@@ -17,3 +18,9 @@ def acquireSessionEmail(cur):
     usernameCur = cur.execute("SELECT username FROM users WHERE email = ?;", (email,))
     userUsername = usernameCur.fetchone()[0]
     return userUsername
+
+def hashPassword(password):
+    # Password hash and salt with argon2 #
+    hasher = argon2.PasswordHasher()
+    hashPassword = hasher.hash(password)
+    return hashPassword
