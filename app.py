@@ -135,12 +135,12 @@ def signup():
             return ErrorConnection(con, "Password format is invalid")
 
         # Password hash and salt with argon2 #
-        hashPassword = hashPassword(password)
+        hashedPassword = hashPassword(password)
 
         # Update database #
         cur.execute(
             "INSERT INTO users (name, lastname, email, username, password) VALUES (?, ?, ?, ?, ?);",
-            (name, lastName, email, username, hashPassword),
+            (name, lastName, email, username, hashedPassword),
         )
         con.commit()
         con.close()
@@ -260,7 +260,7 @@ def changePassword():
         newPasswordUpdate = cur.execute("UPDATE users SET password = ? WHERE username = ?;", (updatedPassword, sessionUsername,))
         con.commit()
         con.close()
-        return redirect("/")
+        return redirect("success")
 
     userUsername = acquireSessionEmail(cur)
     con.close()
@@ -309,7 +309,7 @@ def changeusername():
         )
         con.commit()
         con.close()
-        return redirect("/")
+        return redirect("success")
 
     userUsername = acquireSessionEmail(cur)
     con.close()
