@@ -6,14 +6,10 @@
 <!-- HEADER > NAV BAR-->
 {% block navbar %} {% if session.email %}
 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-  <li class="padd-left-fix">{{ username }}'s Profile</li>
+  <li class="padd-left-fix">Homepage</li>
 </ul>
 
 <div class="text-end">
-  <a href="/settings"><button type="button" class="btn btn-outline-light me-2">
-      Settings
-    </button></a>
-  <a href="/testpage"><button type="button" class="btn btn-outline-light me-2">Test</button></a>
   <a href="/logout"><button type="button" class="btn btn-warning">Log Out</button></a>
 </div>
 {% else %}
@@ -28,7 +24,37 @@
 
 <!-- MAIN -->
 {% block main %} {% if session.email %}
-<h1>Hello {{ username }}</h1>
+<main>
+  <div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom">
+    </header>
+
+    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Welcome {{ username }} !</h1>
+        <p class="col-md-8 fs-4">This is your homepage, here you will be able to navigate through your space. Click the button down below to visit the website gallery, hosting a huge list of movies.</p>
+        <a href="#"><button class="btn btn-primary btn-lg" type="button">Visit the Gallery</button></a>
+      </div>
+    </div>
+
+    <div class="row align-items-md-stretch">
+      <div class="col-md-6">
+        <div class="h-100 p-5 text-bg-dark rounded-3">
+          <h2>Your Collection</h2>
+          <p>Click the button down below to access your own personal Movie's Collection.</p>
+          <a href="#"><button class="btn btn-outline-light" type="button">Go to your collection</button></a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+          <h2>Personal Data</h2>
+          <p>Click below to access your settings page, there you will be able to change the password or username in case you need to.</p>
+          <a href="/settings"><button class="btn btn-outline-secondary" type="button">Go to Settings</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
 {% else %}
 <div class="px-4 pt-5 my-5-edit text-center">
   <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
