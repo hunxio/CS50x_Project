@@ -107,3 +107,15 @@ footer {
 .btn-color:hover {
   background-color: var(--yellow-btn) !important;
 }
+
+.btn-color2 {
+  background-color: #F8F9FA !important;
+  border: 2px solid var(--dark-blue) !important;
+  color: var(--dark-blue) !important;
+}
+
+.btn-color2:hover {
+  background-color: var(--dark-blue) !important;
+  color: #F8F9FA !important;
+}
+
