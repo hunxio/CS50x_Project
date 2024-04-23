@@ -1,100 +1,100 @@
 :root {
-    --dark-grey: #495057;
-    --dark-blue: #212529;
-    --yellow-btn: #FFC107;
+  --dark-grey: #495057;
+  --dark-blue: #212529;
+  --yellow-btn: #ffc107;
 }
 
 * {
-    font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 .no-decoration {
-    text-decoration: none !important;
-    color: white !important;
+  text-decoration: none !important;
+  color: white !important;
 }
 
 .text-color {
-    color: var(--dark-blue);
+  color: var(--dark-blue);
 }
 
 .text-color {
-    color: var(--dark-blue);
+  color: var(--dark-blue);
 }
 
 .logo-size {
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 }
 
 .title-margin-bottom {
-    margin-bottom: 4.5rem !important;
+  margin-bottom: 4.5rem !important;
 }
 
 .my-5-edit {
-    margin-top: 3rem !important;
-    margin-bottom: 2rem !important;
+  margin-top: 3rem !important;
+  margin-bottom: 2rem !important;
 }
 
 .padd-left-fix {
-    padding-left: 0.5rem;
+  padding-left: 0.5rem;
 }
 
 .centering-element {
-    display: flex;
-    justify-content: center;
-    width: 50%;
-    margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  margin: 0 auto;
 }
 
 .btn-login-style {
-    border: 2px solid var(--dark-blue) !important;
-    background-color: var(--dark-blue) !important;
-    color: White !important;
+  border: 2px solid var(--dark-blue) !important;
+  background-color: var(--dark-blue) !important;
+  color: White !important;
 }
 .top-pdd4rem {
-    padding-top: 4rem;
+  padding-top: 4rem;
 }
 
 .top-pdd2rem {
-    padding-top: 2rem;
+  padding-top: 2rem;
 }
 
-footer{
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 3rem; 
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 3rem;
 }
 
 .form-styles {
-    width: 50%;
-    margin: 0 auto;
-    padding-top: 4rem;
+  width: 50%;
+  margin: 0 auto;
+  padding-top: 4rem;
 }
 
 .form-styles2 {
-    width: 30%;
-    margin: 0 auto;
-    padding-top: 4rem;
+  width: 30%;
+  margin: 0 auto;
+  padding-top: 4rem;
 }
 
 .error-window {
-    margin-top: 20px;
-    display: flex;
-    align-content: center;
-    flex-direction: column;
-    align-items: center;
+  margin-top: 20px;
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .toaster {
-    width: 400px;
-    height: 400px;
+  width: 400px;
+  height: 400px;
 }
 
 .btn-color {
-    background-color: var(--dark-blue) !important;
-    border: var(--dark-blue) !important;
+  background-color: var(--dark-blue) !important;
+  border: var(--dark-blue) !important;
 }
 
 .btn-color:hover {
-    background-color: var(--yellow-btn) !important;
+  background-color: var(--yellow-btn) !important;
 }

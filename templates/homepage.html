@@ -4,14 +4,15 @@
 {% block title %} Home {% endblock %}
 
 <!-- HEADER > NAV BAR-->
-{% block navbar %}
-{% if session.email %}
+{% block navbar %} {% if session.email %}
 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
   <li class="padd-left-fix">{{ username }}'s Profile</li>
 </ul>
 
 <div class="text-end">
-  <a href="/settings"><button type="button" class="btn btn-outline-light me-2">Settings</button></a>
+  <a href="/settings"><button type="button" class="btn btn-outline-light me-2">
+      Settings
+    </button></a>
   <a href="/testpage"><button type="button" class="btn btn-outline-light me-2">Test</button></a>
   <a href="/logout"><button type="button" class="btn btn-warning">Log Out</button></a>
 </div>
@@ -23,29 +24,31 @@
   <a href="/login"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
   <a href="/signup"><button type="button" class="btn btn-warning">Sign Up</button></a>
 </div>
-{% endif %}
-{% endblock %}
+{% endif %} {% endblock %}
 
 <!-- MAIN -->
-{% block main %}
-{% if session.email %}
-<h1>Hello {{ username }} </h1>
+{% block main %} {% if session.email %}
+<h1>Hello {{ username }}</h1>
 {% else %}
 <div class="px-4 pt-5 my-5-edit text-center">
   <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
     <div class="col-10 col-sm-8 col-lg-6">
-      <img src="../static/media/assorted-movie-image.jpeg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+      <img src="../static/media/assorted-movie-image.jpeg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes"
+        width="700" height="500" loading="lazy" />
     </div>
     <div class="col-lg-6">
-      <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">"Film Lovers Unite: Share, Discover, Enjoy!"</h1>
-      <p class="lead">Discover the Ultimate Movie Experience with MoviesDB – Your Premier
+      <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+        "Film Lovers Unite: Share, Discover, Enjoy!"
+      </h1>
+      <p class="lead">
+        Discover the Ultimate Movie Experience with MoviesDB – Your Premier
         Destination for Building and Sharing Your Personal Film Collection! Sign
         up for free, tailor your profile to reflect your unique tastes, and dive
         into a world of cinematic exploration. Start adding all your favorite
-        movies and share the magic with fellow film enthusiasts worldwide!</p>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-      </div>
+        movies and share the magic with fellow film enthusiasts worldwide!
+      </p>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start"></div>
     </div>
   </div>
-{% endif %}
-{% endblock %} 
+  {% endif %} {% endblock %}
+</div>
