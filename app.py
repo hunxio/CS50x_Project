@@ -4,7 +4,7 @@ import re
 import argon2
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
-from personaldefs import ErrorTemplate, ErrorConnection, acquireSessionEmail
+from personaldefs import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword
 
 app = Flask(__name__)
 
@@ -135,8 +135,7 @@ def signup():
             return ErrorConnection(con, "Password format is invalid")
 
         # Password hash and salt with argon2 #
-        hasher = argon2.PasswordHasher()
-        hashPassword = hasher.hash(password)
+        hashPassword = hashPassword(password)
 
         # Update database #
         cur.execute(
@@ -217,7 +216,7 @@ def setting():
     return render_template("settings.html", username=userUsername)
 
 
-@app.route("/changepassword")
+@app.route("/changepassword", methods=["GET", "POST"])
 def changePassword():
     # Database connection #
     con = sqlite3.connect("database.db")
@@ -225,10 +224,13 @@ def changePassword():
 
     # If user not logged in, it will be redirected to error page #
     if not session.get("email"):
-        return ErrorTemplate("You are not logged in")
+        return ErrorConnection(con, "You are not logged in")
 
     if request.method == "POST":
-        
+        # Session Username #
+        sessionUsername = acquireSessionEmail(cur)
+
+        # NEW PASSWORD VALIDATION #
         newPassword = request.form.get("newPassword")
         if not newPassword:
             return ErrorConnection(con, "No password provided")
@@ -237,16 +239,31 @@ def changePassword():
                 con,
                 "The new password must be between 8 and 16 characters long",
             )
+        # NEW PASSWORD PATTERN VALIDATION #
+        newPasswordValidation = re.search(
+        r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", newPassword
+        )
+        if newPasswordValidation is None:
+            return ErrorConnection(con, "Password format is invalid")
+
+        # CONFIRM PASSWORD VALIDATION #
         confirmPassword = request.form.get("confirmPassword")
         if not confirmPassword:
             return ErrorConnection(con, "No password provided for confirmation")
         if newPassword != confirmPassword:
             return ErrorConnection(con, "Passwords does not match")
+
+        # Password hash and salt with argon2 #
+        updatedPassword = hashPassword(newPassword)
+
+        # Update database with new hashed password #
+        newPasswordUpdate = cur.execute("UPDATE users SET password = ? WHERE username = ?;", (updatedPassword, sessionUsername,))
+        con.commit()
+        con.close()
         return redirect("/")
 
-    con = sqlite3.connect("database.db")
-    cur = con.cursor()
     userUsername = acquireSessionEmail(cur)
+    con.close()
     return render_template("changepassword.html", username=userUsername)
 
 
@@ -258,7 +275,7 @@ def changeusername():
 
     # If user not logged in, it will be redirected to error page #
     if not session.get("email"):
-        return ErrorTemplate("You are not logged in")
+        return ErrorConnection(con, "You are not logged in")
 
     if request.method == "POST":
         # Session Username #
