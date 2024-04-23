@@ -219,8 +219,30 @@ def setting():
 
 @app.route("/changepassword")
 def changePassword():
+    # Database connection #
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
+
+    # If user not logged in, it will be redirected to error page #
     if not session.get("email"):
         return ErrorTemplate("You are not logged in")
+
+    if request.method == "POST":
+        
+        newPassword = request.form.get("newPassword")
+        if not newPassword:
+            return ErrorConnection(con, "No password provided")
+        if len(newPassword) < 8 or len(newPassword) > 16:
+            return ErrorConnection(
+                con,
+                "The new password must be between 8 and 16 characters long",
+            )
+        confirmPassword = request.form.get("confirmPassword")
+        if not confirmPassword:
+            return ErrorConnection(con, "No password provided for confirmation")
+        if newPassword != confirmPassword:
+            return ErrorConnection(con, "Passwords does not match")
+        return redirect("/")
 
     con = sqlite3.connect("database.db")
     cur = con.cursor()
@@ -263,6 +285,7 @@ def changeusername():
         for _ in range(len(usernameList)):
             if newUsername == usernameList[_][0]:
                 return ErrorConnection(con, "Username already exists")
+        # Update username if it doesn't already exist #
         updateUsername = cur.execute(
             "UPDATE users SET username = ? WHERE username = ?;",
             (newUsername, sessionUsername),
