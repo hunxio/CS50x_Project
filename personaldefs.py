@@ -11,6 +11,7 @@ def ErrorConnection(con, code_error):
 def ErrorTemplate(code_error):
     return render_template("errorpage.html", message=code_error)
 
+# Access to database and looks for user's username by filtering by email (session host)
 def acquireSessionEmail(cur):
     email = session.get("email")
     usernameCur = cur.execute("SELECT username FROM users WHERE email = ?;", (email,))
