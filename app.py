@@ -1,4 +1,5 @@
 import os
+
 import sqlite3
 import re
 import argon2
@@ -241,7 +242,7 @@ def changePassword():
             )
         # NEW PASSWORD PATTERN VALIDATION #
         newPasswordValidation = re.search(
-        r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", newPassword
+            r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}", newPassword
         )
         if newPasswordValidation is None:
             return ErrorConnection(con, "Password format is invalid")
@@ -257,7 +258,13 @@ def changePassword():
         updatedPassword = hashPassword(newPassword)
 
         # Update database with new hashed password #
-        newPasswordUpdate = cur.execute("UPDATE users SET password = ? WHERE username = ?;", (updatedPassword, sessionUsername,))
+        newPasswordUpdate = cur.execute(
+            "UPDATE users SET password = ? WHERE username = ?;",
+            (
+                updatedPassword,
+                sessionUsername,
+            ),
+        )
         con.commit()
         con.close()
         return redirect("success")
