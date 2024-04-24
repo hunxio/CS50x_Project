@@ -110,7 +110,7 @@ footer {
 
 .btn-color2 {
   background-color: #F8F9FA !important;
-  border: 2px solid var(--dark-blue) !important;
+  border: 1px solid var(--dark-blue) !important;
   color: var(--dark-blue) !important;
 }
 
