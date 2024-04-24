@@ -119,3 +119,7 @@ footer {
   color: #F8F9FA !important;
 }
 
+.border-color-frame {
+  border: 1px solid var(--dark-blue) !important;
+}
+
