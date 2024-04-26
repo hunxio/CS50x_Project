@@ -5,7 +5,7 @@ import re
 import argon2
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
-from utils import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword
+from utils import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword, sessionVerification
 
 app = Flask(__name__)
 
@@ -28,11 +28,9 @@ def after_request(response):
 # Homepage #
 @app.route("/")
 def home():
-    if not session.get("email"):
-        return render_template("homepage.html")
-
-    con = sqlite3.connect("database.db")
-    cur = con.cursor()
+    # Validate if an user is logged in or not #
+    sessionVerification(con, cur)
+    
     userUsername = acquireSessionEmail(cur)
     return render_template("homepage.html", username=userUsername)
 
@@ -208,24 +206,17 @@ def login():
 
 @app.route("/settings", methods=["GET", "POST"])
 def setting():
-    if not session.get("email"):
-        return ErrorTemplate("You are not logged in")
-
-    con = sqlite3.connect("database.db")
-    cur = con.cursor()
+    # Validate if an user is logged in or not #
+    sessionVerification(con, cur)
+    
     userUsername = acquireSessionEmail(cur)
     return render_template("settings.html", username=userUsername)
 
 
 @app.route("/changepassword", methods=["GET", "POST"])
 def changePassword():
-    # Database connection #
-    con = sqlite3.connect("database.db")
-    cur = con.cursor()
-
-    # If user not logged in, it will be redirected to error page #
-    if not session.get("email"):
-        return ErrorConnection(con, "You are not logged in")
+    # Validate if an user is logged in or not #
+    sessionVerification(con, cur)
 
     if request.method == "POST":
         # Session Username #
@@ -276,13 +267,8 @@ def changePassword():
 
 @app.route("/changeusername", methods=["GET", "POST"])
 def changeusername():
-    # Database connection #
-    con = sqlite3.connect("database.db")
-    cur = con.cursor()
-
-    # If user not logged in, it will be redirected to error page #
-    if not session.get("email"):
-        return ErrorConnection(con, "You are not logged in")
+    # Validate if an user is logged in or not #
+    sessionVerification(con, cur)
 
     if request.method == "POST":
         # Session Username #
@@ -321,3 +307,15 @@ def changeusername():
     userUsername = acquireSessionEmail(cur)
     con.close()
     return render_template("changeusername.html", username=userUsername)
+
+@app.route("/moviedatabase")
+def moviedatabase():
+    # Database connection #
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
+
+    # If user not logged in, it will be redirected to error page #
+    if not session.get("email"):
+        return ErrorConnection(con, "You are not logged in")
+
+    return render_template("moviesdatabase.html",)
