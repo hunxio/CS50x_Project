@@ -322,8 +322,8 @@ def changeusername():
     con.close()
     return render_template("changeusername.html", username=userUsername)
 
-@app.route("/moviedatabase")
-def moviedatabase():
+@app.route("/gallery")
+def gallery():
     # Database connection #
     con = sqlite3.connect("database.db")
     cur = con.cursor()
@@ -332,4 +332,4 @@ def moviedatabase():
     if not session.get("email"):
         return ErrorConnection(con, "You are not logged in")
 
-    return render_template("moviesdatabase.html",)
+    return render_template("gallery.html",)
