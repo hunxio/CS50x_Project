@@ -5,7 +5,7 @@ import re
 import argon2
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
-from utils import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword, sessionVerification
+from utils import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword
 
 app = Flask(__name__)
 
@@ -28,9 +28,11 @@ def after_request(response):
 # Homepage #
 @app.route("/")
 def home():
-    # Validate if an user is logged in or not #
-    sessionVerification(con, cur)
-    
+    if not session.get("email"):
+        return render_template("homepage.html")
+
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
     userUsername = acquireSessionEmail(cur)
     return render_template("homepage.html", username=userUsername)
 
@@ -206,17 +208,24 @@ def login():
 
 @app.route("/settings", methods=["GET", "POST"])
 def setting():
-    # Validate if an user is logged in or not #
-    sessionVerification(con, cur)
-    
+    if not session.get("email"):
+        return ErrorTemplate("You are not logged in")
+
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
     userUsername = acquireSessionEmail(cur)
     return render_template("settings.html", username=userUsername)
 
 
 @app.route("/changepassword", methods=["GET", "POST"])
 def changePassword():
-    # Validate if an user is logged in or not #
-    sessionVerification(con, cur)
+    # Database connection #
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
+
+    # If user not logged in, it will be redirected to error page #
+    if not session.get("email"):
+        return ErrorConnection(con, "You are not logged in")
 
     if request.method == "POST":
         # Session Username #
@@ -267,8 +276,13 @@ def changePassword():
 
 @app.route("/changeusername", methods=["GET", "POST"])
 def changeusername():
-    # Validate if an user is logged in or not #
-    sessionVerification(con, cur)
+    # Database connection #
+    con = sqlite3.connect("database.db")
+    cur = con.cursor()
+
+    # If user not logged in, it will be redirected to error page #
+    if not session.get("email"):
+        return ErrorConnection(con, "You are not logged in")
 
     if request.method == "POST":
         # Session Username #

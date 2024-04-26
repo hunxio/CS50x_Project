@@ -16,17 +16,6 @@ def ErrorTemplate(code_error):
     return render_template("errorpage.html", message=code_error)
 
 
-def sessionVerification(con, cur):
-    # Database connection #
-    con = sqlite3.connect("database.db")
-    cur = con.cursor()
-
-    # If user not logged in, it will be redirected to error page #
-    if not session.get("email"):
-        con.close()
-        return ErrorConnection(con, "You are not logged in")
-    
-
 # Access to database and looks for user's username by filtering by email (session host)
 def acquireSessionEmail(cur):
     email = session.get("email")
@@ -40,7 +29,6 @@ def hashPassword(password):
     hasher = argon2.PasswordHasher()
     hashPassword = hasher.hash(password)
     return hashPassword
-
     
 def api():
     url = "https://api.themoviedb.org/3/configuration"
