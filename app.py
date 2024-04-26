@@ -5,7 +5,7 @@ import re
 import argon2
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
-from utils import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword
+from utils import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword, movieapi
 
 app = Flask(__name__)
 
@@ -322,14 +322,15 @@ def changeusername():
     con.close()
     return render_template("changeusername.html", username=userUsername)
 
-@app.route("/gallery")
+@app.route("/gallery", methods=["GET"])
 def gallery():
-    # Database connection #
-    con = sqlite3.connect("database.db")
-    cur = con.cursor()
+        # Database connection #
+        con = sqlite3.connect("database.db")
+        cur = con.cursor()
 
-    # If user not logged in, it will be redirected to error page #
-    if not session.get("email"):
-        return ErrorConnection(con, "You are not logged in")
+        # If user not logged in, it will be redirected to error page #
+        if not session.get("email"):
+            return ErrorConnection(con, "You are not logged in")
 
-    return render_template("gallery.html",)
+        test = movieapi(300001)
+        return render_template("gallery.html", test=test)
