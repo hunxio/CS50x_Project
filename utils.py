@@ -30,14 +30,17 @@ def hashPassword(password):
     hashPassword = hasher.hash(password)
     return hashPassword
     
-def api():
-    url = "https://api.themoviedb.org/3/configuration"
+# API SERVICE PROVIDED BY https://www.themoviedb.org/ #
+def movieapi(movie_id):
+
+    url = " https://api.themoviedb.org/3/movie/" + str(movie_id)
 
     headers = {
-    "accept": "application/json",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZDFiZWY5ZDNhMmM2YjljOWZiMGJhNzBmMGM4MmEyMyIsInN1YiI6IjY2MmJhNTRiNmYzMWFmMDExZmI3NTIwMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.YSjZO6oBSn3tqJLP5l6KLG12wzod-xZEiYVzxxOfpwQ"
+        "accept": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZDFiZWY5ZDNhMmM2YjljOWZiMGJhNzBmMGM4MmEyMyIsInN1YiI6IjY2MmJhNTRiNmYzMWFmMDExZmI3NTIwMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.YSjZO6oBSn3tqJLP5l6KLG12wzod-xZEiYVzxxOfpwQ"
     }
 
     response = requests.get(url, headers=headers)
+    original_title = response.json()["original_title"]
+    return original_title
 
-    return print(response.text)
