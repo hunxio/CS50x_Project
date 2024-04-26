@@ -8,8 +8,14 @@
 
 <div class="text-end">
   <a href="/"><button type="button" class="btn btn-outline-light me-2"><</button></a>
-  <a href="#"><button type="button" class="btn btn-outline-light me-2">Your Collection</button></a>
+  <a href="#"><button type="button" class="btn btn-outline-light me-2">Collection</button></a>
   <a href="/logout"><button type="button" class="btn btn-warning">Log Out</button></a>
 </div>
+{% endif %}
+{% endblock %}
+
+{% block main %}
+{% if session.email %}
+{{ test }}
 {% endif %}
 {% endblock %}
