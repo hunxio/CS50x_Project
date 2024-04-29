@@ -47,3 +47,5 @@ For more informations about this project, visit my github profile
 Bootstrap for front-end resources:
 https://getbootstrap.com/
 
+API Service provided by:
+https://www.themoviedb.org/
