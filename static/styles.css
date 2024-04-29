@@ -123,3 +123,9 @@ footer {
   border: 1px solid var(--dark-blue) !important;
 }
 
+.title-style
+{
+  text-align: center; 
+  padding-top: 20px;
+}
+
