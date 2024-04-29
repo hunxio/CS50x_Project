@@ -1,9 +1,13 @@
 import os
+
 import sqlite3
 import argon2
 import requests
+from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, request, session
 
+load_dotenv()
+api_key = os.getenv("API_KEY")
 
 # It will close the database connection and return an error page #
 def ErrorConnection(con, code_error):
@@ -37,7 +41,7 @@ def movieapi(movie_id):
 
     headers = {
         "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZDFiZWY5ZDNhMmM2YjljOWZiMGJhNzBmMGM4MmEyMyIsInN1YiI6IjY2MmJhNTRiNmYzMWFmMDExZmI3NTIwMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.YSjZO6oBSn3tqJLP5l6KLG12wzod-xZEiYVzxxOfpwQ"
+        "Authorization": "Bearer " + str(api_key)
     }
 
     response = requests.get(url, headers=headers)

@@ -5,6 +5,7 @@ import re
 import argon2
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
+from dotenv import load_dotenv
 from utils import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword, movieapi
 
 app = Flask(__name__)
@@ -24,6 +25,8 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+load_dotenv()
+database_url = os.getenv("DATABASE_URL")
 
 # Homepage #
 @app.route("/")
@@ -31,7 +34,7 @@ def home():
     if not session.get("email"):
         return render_template("homepage.html")
 
-    con = sqlite3.connect("database.db")
+    con = sqlite3.connect(str(database_url))
     cur = con.cursor()
     userUsername = acquireSessionEmail(cur)
     return render_template("homepage.html", username=userUsername)
@@ -68,7 +71,7 @@ def errorpage():
 def signup():
     if request.method == "POST":
         # Database creation and update #
-        con = sqlite3.connect("database.db")
+        con = sqlite3.connect(str(database_url))
         cur = con.cursor()
         cur.execute(
             "CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, lastname TEXT NOT NULL, email TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL);"
@@ -158,7 +161,7 @@ def login():
         passwordFound = None
 
         # Database connection #
-        con = sqlite3.connect("database.db")
+        con = sqlite3.connect(str(database_url))
         cur = con.cursor()
 
         # USERNAME VALIDATION #
@@ -211,7 +214,7 @@ def setting():
     if not session.get("email"):
         return ErrorTemplate("You are not logged in")
 
-    con = sqlite3.connect("database.db")
+    con = sqlite3.connect(str(database_url))
     cur = con.cursor()
     userUsername = acquireSessionEmail(cur)
     return render_template("settings.html", username=userUsername)
@@ -220,7 +223,7 @@ def setting():
 @app.route("/changepassword", methods=["GET", "POST"])
 def changePassword():
     # Database connection #
-    con = sqlite3.connect("database.db")
+    con = sqlite3.connect(str(database_url))
     cur = con.cursor()
 
     # If user not logged in, it will be redirected to error page #
@@ -277,7 +280,7 @@ def changePassword():
 @app.route("/changeusername", methods=["GET", "POST"])
 def changeusername():
     # Database connection #
-    con = sqlite3.connect("database.db")
+    con = sqlite3.connect(str(database_url))
     cur = con.cursor()
 
     # If user not logged in, it will be redirected to error page #
@@ -325,7 +328,7 @@ def changeusername():
 @app.route("/gallery", methods=["GET"])
 def gallery():
         # Database connection #
-        con = sqlite3.connect("database.db")
+        con = sqlite3.connect(str(database_url))
         cur = con.cursor()
 
         # If user not logged in, it will be redirected to error page #
