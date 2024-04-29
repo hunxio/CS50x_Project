@@ -3,3 +3,4 @@ database.db
 flask_session/*
 virtualenvOS/*
 virtualenvWindows/*
+__pycache__/*
