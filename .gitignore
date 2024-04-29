@@ -2,4 +2,4 @@
 database.db
 flask_session/*
 virtualenvOS/*
-virtualenvOSWindows/*
+virtualenvWindows/*
