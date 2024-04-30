@@ -18,21 +18,21 @@
 
 {% block main %}
 {% if session.email %}
-<h1 class="title-style">Search for a Movie</h1>
-<form action="" method="get" style="display:flex;justify-content: center;">
+<h1 class="title-style">Search</h1>
+<form action="/searchresult" method="get" style="display:flex;justify-content: center;">
   <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3"
     style="padding:10px 30px 0 30px; width: 30%; display:flex;">
     <input type="text" autocomplete="off" autofocus required class="form-control" id="movieName" name="movieName">
-    <button type="button" class="btn btn-outline-secondary btn-lg px-4">Search</button>
+    <button type="submit" class="btn btn-outline-secondary btn-lg px-4">Search</button>
   </div>
 </form>
 <h1 style="padding:10px 0 10px 30px;">Result for "{{movieName}}"</h1>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="padding:0 30px 30px 30px; justify-content:center;">
-  {% for movie_info in trending_list %}
+  {% for movie_info in search_list %}
   <div class="col">
     <div class="card shadow-sm">
-      <img class="bd-placeholder-img card-img-top" width="100%" height="225" src={{movie_info.image}} role="img"
-        focusable="false" style="object-fit: cover;"></img>
+      <img class="bd-placeholder-img card-img-top" width="100%" height="225" title= "Movie Picture" src={{movie_info.image}} role="img"
+        focusable="false" style="object-fit: cover;" alt="Movie Picture" onerror="this.src='../static/media/no-image.png'; this.alt='Placeholder Picture'"></img>
       <div class="card-body">
         <h4 class="card-text" style="text-align: center;">{{movie_info.title}}</h4>
         <p class="card-text"><i>{{movie_info.overview}}</i></p>
