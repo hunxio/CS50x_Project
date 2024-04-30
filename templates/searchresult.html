@@ -4,11 +4,11 @@
 {% block navbar %}
 {% if session.email %}
 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-  <li class="padd-left-fix">MoviesDB Gallery: Results</li>
+  <li class="padd-left-fix">MoviesDB Search: {{movieName}}</li>
 </ul>
 
 <div class="text-end">
-  <a href="/"><button type="button" class="btn btn-outline-light me-2">
+  <a href="/gallery"><button type="button" class="btn btn-outline-light me-2">
       < </button></a>
   <a href="#"><button type="button" class="btn btn-outline-light me-2">Collection</button></a>
   <a href="/logout"><button type="button" class="btn btn-warning">Log Out</button></a>
@@ -26,7 +26,7 @@
     <button type="submit" class="btn btn-outline-secondary btn-lg px-4">Search</button>
   </div>
 </form>
-<h1 style="padding:10px 0 10px 30px;">Result for "{{movieName}}"</h1>
+<h1 style="padding:10px 0 10px 30px;">Results for "{{movieName}}"</h1>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="padding:0 30px 30px 30px; justify-content:center;">
   {% for movie_info in search_list %}
   <div class="col">
