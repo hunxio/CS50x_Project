@@ -108,7 +108,10 @@ def signup():
             return ErrorConnection(con, "Email does not match")
 
         emailCur = cur.execute("SELECT email FROM users;")
-        emailList = emailCur.fetchall()
+        try:
+            emailList = emailCur.fetchall()
+        except TypeError:
+            pass
         for _ in range(len(emailList)):
             if email == emailList[_][0]:
                 return ErrorConnection(con, "Email already exists")
