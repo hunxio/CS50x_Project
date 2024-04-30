@@ -346,7 +346,7 @@ def gallery():
 
     trending_list = []
 
-    # It will only select the first 5 appearing in the API response #
+    # It will only select the first 6 appearing in the API response #
     for i in range(6):
         title = trendingMovieAPI(i)[0]
         image = trendingMovieAPI(i)[1]
