@@ -19,10 +19,10 @@
 {% block main %}
 {% if session.email %}
 <h1 class="title-style">Movie Collection</h1>
-<form action="" method="post" style="display:flex;justify-content: center;">
+<form action="/searchresult" method="get" style="display:flex;justify-content: center;">
   <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3"
     style="padding:10px 30px 0 30px; width: 30%; display:flex;">
-    <input type="text" autocomplete="off" autofocus required class="form-control" id="movieSearch" name="movieSearch">
+    <input type="text" autocomplete="off" autofocus required class="form-control" id="movieName" name="movieName">
     <button type="button" class="btn btn-outline-secondary btn-lg px-4">Search</button>
   </div>
 </form>
