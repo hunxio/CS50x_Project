@@ -12,6 +12,7 @@ from utils import (
     acquireSessionEmail,
     hashPassword,
     trendingMovieAPI,
+    searchAPI
 )
 
 app = Flask(__name__)
@@ -366,3 +367,11 @@ def gallery():
             }
         )
     return render_template("gallery.html", trending_list=trending_list)
+
+
+@app.route("/searchresult", methods=["GET"])
+def searchresult():
+    # Retrieve the argumnet from the query search #
+    movie_name = request.args.get("movieName")
+    print(movie_name)
+    return render_template("searchresult.html", movieName=movie_name)
