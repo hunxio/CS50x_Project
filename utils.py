@@ -65,3 +65,17 @@ def trendingMovieAPI(position):
         return title, complete_image, overview, release_date, vote_average
     else:
         return ErrorTemplate("Failed to retrieve data. API not working properly.")
+
+def searchAPI(movie_name):
+
+    url = "https://api.themoviedb.org/3/search/movie"
+
+    headers = {"accept": "application/json", "Authorization": "Bearer " + str(api_key)}
+
+    response = requests.get(url, headers=headers)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        return result
+    else:
+        return ErrorTemplate("Failed to retrieve data. API not working properly.")
