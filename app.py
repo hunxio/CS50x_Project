@@ -6,7 +6,13 @@ import argon2
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
 from dotenv import load_dotenv
-from utils import ErrorTemplate, ErrorConnection, acquireSessionEmail, hashPassword, movieapi
+from utils import (
+    ErrorTemplate,
+    ErrorConnection,
+    acquireSessionEmail,
+    hashPassword,
+    trendingMovieAPI,
+)
 
 app = Flask(__name__)
 
@@ -25,8 +31,10 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+
 load_dotenv()
 database_url = os.getenv("DATABASE_URL")
+
 
 # Homepage #
 @app.route("/")
@@ -325,15 +333,36 @@ def changeusername():
     con.close()
     return render_template("changeusername.html", username=userUsername)
 
+
 @app.route("/gallery", methods=["GET"])
 def gallery():
-        # Database connection #
-        con = sqlite3.connect(str(database_url))
-        cur = con.cursor()
+    # Database connection #
+    con = sqlite3.connect(str(database_url))
+    cur = con.cursor()
 
-        # If user not logged in, it will be redirected to error page #
-        if not session.get("email"):
-            return ErrorConnection(con, "You are not logged in")
+    # If user not logged in, it will be redirected to error page #
+    if not session.get("email"):
+        return ErrorConnection(con, "You are not logged in")
 
-        test = movieapi(823464)
-        return render_template("gallery.html", test=test)
+    trending_list = []
+
+    # It will only select the first 5 appearing in the API response #
+    for i in range(6):
+        title = trendingMovieAPI(i)[0]
+        image = trendingMovieAPI(i)[1]
+        overview = trendingMovieAPI(i)[2]
+        release_date = trendingMovieAPI(i)[3]
+        # Split the date string by the "-" character and select the first element
+        vote_average = trendingMovieAPI(i)[4]
+        # Formatting avg vote to X.XX #
+        format_vote = "{:.2f}".format(vote_average)
+        trending_list.append(
+            {
+                "title": title,
+                "image": image,
+                "overview": overview,
+                "release_date": release_date,
+                "vote_average": format_vote,
+            }
+        )
+    return render_template("gallery.html", trending_list=trending_list)
