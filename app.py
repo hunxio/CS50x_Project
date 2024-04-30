@@ -348,13 +348,14 @@ def gallery():
     trending_list = []
 
     # It will only select the first 6 appearing in the API response #
-    for i in range(6):
-        title = trendingMovieAPI(i)[0]
-        image = trendingMovieAPI(i)[1]
-        overview = trendingMovieAPI(i)[2]
-        release_date = trendingMovieAPI(i)[3]
+    for i in range(15):
+        api_result = trendingMovieAPI(i)
+        title = api_result[0]
+        image = api_result[1]
+        overview = api_result[2]
+        release_date = api_result[3]
         # Split the date string by the "-" character and select the first element
-        vote_average = trendingMovieAPI(i)[4]
+        vote_average = api_result[4]
         # Formatting avg vote to X.XX #
         format_vote = "{:.2f}".format(vote_average)
         trending_list.append(
@@ -366,12 +367,47 @@ def gallery():
                 "vote_average": format_vote,
             }
         )
+    con.close()
     return render_template("gallery.html", trending_list=trending_list)
 
 
 @app.route("/searchresult", methods=["GET"])
 def searchresult():
-    # Retrieve the argumnet from the query search #
-    movie_name = request.args.get("movieName")
-    print(movie_name)
-    return render_template("searchresult.html", movieName=movie_name)
+    # Database connection #
+    con = sqlite3.connect(str(database_url))
+    cur = con.cursor()
+
+    # If user not logged in, it will be redirected to error page #
+    if not session.get("email"):
+        return ErrorConnection(con, "You are not logged in")
+
+    # Retrieve the argument from the query #
+    movieName = request.args.get("movieName")
+
+    search_list = []
+
+    # It will only select the first 6 appearing in the API response #
+    try:
+        for i in range(15):
+            api_result = searchAPI(i, movieName)
+            title = api_result[0]
+            image = api_result[1]
+            overview = api_result[2]
+            release_date = api_result[3]
+            # Split the date string by the "-" character and select the first element
+            vote_average = api_result[4]
+            # Formatting avg vote to X.XX #
+            format_vote = "{:.2f}".format(vote_average)
+            search_list.append( 
+                {
+                    "title": title,
+                    "image": image,
+                    "overview": overview,
+                    "release_date": release_date,
+                    "vote_average": format_vote,
+                }
+            )
+    except TypeError:
+        return ErrorConnection(con, "No results found")
+    con.close()
+    return render_template("searchresult.html", search_list=search_list, movieName=movieName)
