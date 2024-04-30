@@ -9,6 +9,7 @@ from flask import Flask, render_template, redirect, request, session
 load_dotenv()
 api_key = os.getenv("API_KEY")
 
+
 # It will close the database connection and return an error page #
 def ErrorConnection(con, code_error):
     con.close()
@@ -33,18 +34,34 @@ def hashPassword(password):
     hasher = argon2.PasswordHasher()
     hashPassword = hasher.hash(password)
     return hashPassword
-    
+
+
 # API SERVICE PROVIDED BY https://www.themoviedb.org/ #
-def movieapi(movie_id):
+def trendingMovieAPI(position):
 
-    url = " https://api.themoviedb.org/3/movie/" + str(movie_id)
+    url = "https://api.themoviedb.org/3/trending/movie/day?language=en-US"
 
-    headers = {
-        "accept": "application/json",
-        "Authorization": "Bearer " + str(api_key)
-    }
+    headers = {"accept": "application/json", "Authorization": "Bearer " + str(api_key)}
 
     response = requests.get(url, headers=headers)
-    original_title = response.json()["original_title"]
-    return original_title
 
+    # Check if the request was successful
+    if response.status_code == 200:
+        data = response.json()
+        movie_data = data["results"][
+            position
+        ]  # Accessing the first movie object in the results list
+        title = movie_data["title"]
+        image = movie_data["backdrop_path"]
+        base_image_url = "https://image.tmdb.org/t/p/w500"  # Base URL
+        poster_path = str(image)  # Relative to movie URL
+
+        # Complete URL for Movie Image
+        complete_image = base_image_url + poster_path
+
+        overview = movie_data["overview"]
+        release_date = movie_data["release_date"]
+        vote_average = movie_data["vote_average"]
+        return title, complete_image, overview, release_date, vote_average
+    else:
+        return ErrorTemplate("Failed to retrieve data. API not working properly.")
