@@ -422,11 +422,25 @@ def collection():
     cur = con.cursor()
     username = acquireSessionEmail(cur)
     userid = acquireSessionId(cur)
+    user_collection = []
     if request.method == "POST":
-        name = request.form.get("movieName")
-        image = request.form.get("movieImage")
+        title = str(request.form.get("movieName"))
+        image = str(request.form.get("movieImage"))
         cur.execute(
-            "CREATE TABLE IF NOT EXISTS usersCollection(FOREIGN KEY(userId) REFERENCES users(id), name TEXT NOT NULL, image TEXT NOT NULL);"
+            "CREATE TABLE IF NOT EXISTS usersCollection(userId INTEGER NOT NULL, movieaddId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT NOT NULL, image TEXT NOT NULL);"
         )
-        return render_template("collection.html", username=username)
-    return render_template("collection.html", username=userid)
+        cur.execute(
+            "INSERT INTO usersCollection(userId, title, image) VALUES(?,?,?);",
+            (userid, title, image),
+        )
+        con.commit()
+        user_collection.append( 
+            {
+                "title": title,
+                "image": image,
+            }
+        )
+        con.close()
+        return render_template("collection.html", username=username, collection=user_collection)
+    con.close()
+    return render_template("collection.html", username=userid, collection=user_collection)
