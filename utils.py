@@ -83,7 +83,7 @@ def searchAPI(position, query):
         data = response.json()
         # Check if results are not empty
         if "results" in data and data["results"]:
-             # Accessing the movie object at specified position
+            # Accessing the movie object at specified position
             movie_data = data["results"][position]
             title = movie_data["title"]
             image = movie_data["backdrop_path"]
