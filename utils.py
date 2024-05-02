@@ -28,6 +28,11 @@ def acquireSessionEmail(cur):
     userUsername = usernameCur.fetchone()[0]
     return userUsername
 
+def acquireSessionId(cur):
+    email = session.get("email")
+    idCur = cur.execute("SELECT id FROM users WHERE email = ?;", (email,))
+    userId = idCur.fetchone()[0]
+    return userId
 
 def hashPassword(password):
     # Password hash and salt with argon2 #
