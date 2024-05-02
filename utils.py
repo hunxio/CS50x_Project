@@ -53,8 +53,10 @@ def trendingMovieAPI(position):
         ]  # Accessing the first movie object in the results list
         title = movie_data["title"]
         image = movie_data["backdrop_path"]
-        base_image_url = "https://image.tmdb.org/t/p/w500"  # Base URL
-        poster_path = str(image)  # Relative to movie URL
+        # Base URL
+        base_image_url = "https://image.tmdb.org/t/p/w500"
+        # Relative to movie URL
+        poster_path = str(image)
 
         # Complete URL for Movie Image
         complete_image = base_image_url + poster_path
@@ -81,11 +83,14 @@ def searchAPI(position, query):
         data = response.json()
         # Check if results are not empty
         if "results" in data and data["results"]:
-            movie_data = data["results"][position]  # Accessing the movie object at specified position
+             # Accessing the movie object at specified position
+            movie_data = data["results"][position]
             title = movie_data["title"]
             image = movie_data["backdrop_path"]
-            base_image_url = "https://image.tmdb.org/t/p/w500"  # Base URL
-            poster_path = str(image)  # Relative to movie URL
+            # Base URL
+            base_image_url = "https://image.tmdb.org/t/p/w500"
+            # Relative to movie URL
+            poster_path = str(image)
 
             # Complete URL for Movie Image
             complete_image = base_image_url + poster_path
