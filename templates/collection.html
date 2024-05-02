@@ -1,1 +1,17 @@
 {% extends "layout.html"%}
+
+{% block title %} Collection {% endblock %}
+
+{% block navbar %} {% if session.email %}
+<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+  <li class="padd-left-fix">{{username}}'s Collection</li>
+</ul>
+
+<div class="text-end">
+<a href="/"><button type="button" class="btn btn-outline-light me-2">
+    < </button></a>
+<a href="/gallery"><button type="button" class="btn btn-outline-light me-2">
+    DB Gallery </button></a>
+<a href="/logout"><button type="button" class="btn btn-warning">Log Out</button></a>
+</div>
+{% endif %} {% endblock %}
