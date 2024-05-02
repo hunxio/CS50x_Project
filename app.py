@@ -12,7 +12,8 @@ from utils import (
     acquireSessionEmail,
     hashPassword,
     trendingMovieAPI,
-    searchAPI
+    searchAPI,
+    acquireSessionId
 )
 
 app = Flask(__name__)
@@ -338,7 +339,7 @@ def changeusername():
     return render_template("changeusername.html", username=userUsername)
 
 
-@app.route("/gallery", methods=["GET"])
+@app.route("/gallery", methods=["GET", "POST"])
 def gallery():
     # Database connection #
     con = sqlite3.connect(str(database_url))
@@ -374,7 +375,7 @@ def gallery():
     return render_template("gallery.html", trending_list=trending_list)
 
 
-@app.route("/searchresult", methods=["GET"])
+@app.route("/searchresult", methods=["GET, POST"])
 def searchresult():
     # Database connection #
     con = sqlite3.connect(str(database_url))
@@ -415,6 +416,17 @@ def searchresult():
     con.close()
     return render_template("searchresult.html", search_list=search_list, movieName=movieName)
 
-@app.route("/collection", methods=["GET"])
+@app.route("/collection", methods=["GET", "POST"])
 def collection():
-    return render_template("collection.html")
+    con = sqlite3.connect(str(database_url))
+    cur = con.cursor()
+    username = acquireSessionEmail(cur)
+    userid = acquireSessionId(cur)
+    if request.method == "POST":
+        name = request.form.get("movieName")
+        image = request.form.get("movieImage")
+        cur.execute(
+            "CREATE TABLE IF NOT EXISTS usersCollection(FOREIGN KEY(userId) REFERENCES users(id), name TEXT NOT NULL, image TEXT NOT NULL);"
+        )
+        return render_template("collection.html", username=username)
+    return render_template("collection.html", username=userid)
