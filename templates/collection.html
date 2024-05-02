@@ -11,7 +11,16 @@
 <a href="/"><button type="button" class="btn btn-outline-light me-2">
     < </button></a>
 <a href="/gallery"><button type="button" class="btn btn-outline-light me-2">
-    DB Gallery </button></a>
+  Gallery </button></a>
 <a href="/logout"><button type="button" class="btn btn-warning">Log Out</button></a>
 </div>
 {% endif %} {% endblock %}
+
+{% block main %} {% if session.email %}
+<div class="grid-container">
+  <div class="grid-item">
+      <img src="../static/media/no-image.png" alt="Movie Banner">
+      <div class="movie-name">Movie Name</div>
+  </div>
+</div>
+{% endif %}{% endblock %}
