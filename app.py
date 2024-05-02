@@ -414,3 +414,7 @@ def searchresult():
         return ErrorConnection(con, "No results found")
     con.close()
     return render_template("searchresult.html", search_list=search_list, movieName=movieName)
+
+@app.route("/collection", methods=["GET"])
+def collection():
+    return render_template("collection.html")
