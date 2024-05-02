@@ -17,10 +17,12 @@
 {% endif %} {% endblock %}
 
 {% block main %} {% if session.email %}
+{% for movies in collection %}
 <div class="grid-container">
   <div class="grid-item">
-      <img src="../static/media/no-image.png" alt="Movie Banner">
-      <div class="movie-name">Movie Name</div>
+      <img src="{{movies.image}}" alt="Movie Banner">
+      <div class="movie-name">{{movies.title}}</div>
   </div>
 </div>
+{% endfor %}
 {% endif %}{% endblock %}
