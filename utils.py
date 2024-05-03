@@ -4,6 +4,7 @@ import sqlite3
 import argon2
 import requests
 from dotenv import load_dotenv
+from urllib.parse import quote
 from flask import Flask, render_template, redirect, request, session
 
 load_dotenv()
@@ -28,11 +29,13 @@ def acquireSessionEmail(cur):
     userUsername = usernameCur.fetchone()[0]
     return userUsername
 
+
 def acquireSessionId(cur):
     email = session.get("email")
     idCur = cur.execute("SELECT id FROM users WHERE email = ?;", (email,))
     userId = idCur.fetchone()[0]
     return userId
+
 
 def hashPassword(password):
     # Password hash and salt with argon2 #
@@ -69,7 +72,8 @@ def trendingMovieAPI(position):
         overview = movie_data["overview"]
         release_date = movie_data["release_date"]
         vote_average = movie_data["vote_average"]
-        return title, complete_image, overview, release_date, vote_average
+        movie_id = movie_data["id"]
+        return title, complete_image, overview, release_date, vote_average, movie_id
     else:
         return ErrorTemplate("Failed to retrieve data. API not working properly.")
 
@@ -79,7 +83,10 @@ def searchAPI(position, query):
 
     headers = {"accept": "application/json", "Authorization": "Bearer " + str(api_key)}
 
-    params = {"query": query}  # Add the query parameter
+    # Encode the query parameter properly
+    encoded_query = quote(query)
+
+    params = {"query": encoded_query}  # Add the encoded query parameter
 
     response = requests.get(url, headers=headers, params=params)
 
@@ -88,23 +95,35 @@ def searchAPI(position, query):
         data = response.json()
         # Check if results are not empty
         if "results" in data and data["results"]:
-            # Accessing the movie object at specified position
-            movie_data = data["results"][position]
-            title = movie_data["title"]
-            image = movie_data["backdrop_path"]
-            # Base URL
-            base_image_url = "https://image.tmdb.org/t/p/w500"
-            # Relative to movie URL
-            poster_path = str(image)
+            # Check if the specified position is within the bounds of the results list
+            if 0 <= position < len(data["results"]):
+                # Accessing the movie object at specified position
+                movie_data = data["results"][position]
+                title = movie_data["title"]
+                image = movie_data["backdrop_path"]
+                # Base URL
+                base_image_url = "https://image.tmdb.org/t/p/w500"
+                # Relative to movie URL
+                poster_path = str(image)
 
-            # Complete URL for Movie Image
-            complete_image = base_image_url + poster_path
+                # Complete URL for Movie Image
+                complete_image = base_image_url + poster_path
 
-            overview = movie_data["overview"]
-            release_date = movie_data["release_date"]
-            vote_average = movie_data["vote_average"]
-            return title, complete_image, overview, release_date, vote_average
+                overview = movie_data["overview"]
+                release_date = movie_data["release_date"]
+                vote_average = movie_data["vote_average"]
+                movie_id = movie_data["id"]
+                return (
+                    title,
+                    complete_image,
+                    overview,
+                    release_date,
+                    vote_average,
+                    movie_id,
+                )
+            else:
+                return None
         else:
-            return None  # No results found
+            return None
     else:
-        return ErrorTemplate("Failed to retrieve data. API not working properly.")
+        return "Failed to retrieve data. API not working properly."
