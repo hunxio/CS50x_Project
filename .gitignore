@@ -4,4 +4,3 @@ flask_session/*
 virtualenvOS/*
 virtualenvWindows/*
 __pycache__/*
-.DS_Store
