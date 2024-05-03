@@ -359,14 +359,19 @@ def gallery():
         )
         movie_id = request.form.get("movieID")
         try:
-            cur.execute(
-                "INSERT INTO usersCollection(movie_id, user_id) VALUES(?, ?)",
-                (movie_id, userid),
-            )
-        except sqlite3.IntegrityError:
-            return ErrorConnection(con, "Movie already added to collection")
+            movieIdCur = cur.execute("SELECT movie_id FROM usersCollection WHERE user_id = ?;", (userid,))
+            movieIdFetch = cur.fetchall()
+            for i in range(len(movieIdFetch)):
+                if movieIdFetch[i][0] == int(movie_id):
+                    return ErrorConnection(con, "Movie already in your collection")
+        except:
+            pass
+        cur.execute(
+            "INSERT INTO usersCollection(movie_id, user_id) VALUES(?, ?)",
+            (movie_id, userid),
+        )
         con.commit()
-        con.close()
+        con.close() 
         return redirect("/collection")
 
     # It will only select the first 12 appearing in the API response #
@@ -417,14 +422,19 @@ def searchresult():
         )
         movie_id = request.form.get("movieID")
         try:
-            cur.execute(
-                "INSERT INTO usersCollection(movie_id, user_id) VALUES(?, ?)",
-                (movie_id, userid),
-            )
-        except sqlite3.IntegrityError:
-            return ErrorConnection(con, "Movie already added to collection")
+            movieIdCur = cur.execute("SELECT movie_id FROM usersCollection WHERE user_id = ?;", (userid,))
+            movieIdFetch = cur.fetchall()
+            for i in range(len(movieIdFetch)):
+                if movieIdFetch[i][0] == int(movie_id):
+                    return ErrorConnection(con, "Movie already in your collection")
+        except:
+            pass
+        cur.execute(
+            "INSERT INTO usersCollection(movie_id, user_id) VALUES(?, ?)",
+            (movie_id, userid),
+        )
         con.commit()
-        con.close()
+        con.close() 
         return redirect("/collection")
 
     # It will only select the first 12 appearing in the API response #
