@@ -29,11 +29,11 @@
 <h1 style="padding:10px 0 10px 30px;">Top Trending Today</h1>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="padding:0 30px 30px 30px; justify-content:center;">
   {% for movie_info in trending_list %}
-  <form action="/collection" method="post">
+  <form action="/gallery" method="post">
   <div class="col">
     <div class="card shadow-sm">
-      <img class="bd-placeholder-img card-img-top" name="movieImage" width="100%" height="225" title="Movie Picture" src={{movie_info.image}} role="img"
-        focusable="false" style="object-fit: cover;"></img>
+      <img class="bd-placeholder-img card-img-top" name="movieImage" width="100%" height="225" title="Movie Picture"  src="{{movie_info.image}}" role="img"
+        focusable="false" style="object-fit: cover;">
       <div class="card-body">
         <h4 class="card-text" style="text-align: center;" name="movieName">{{movie_info.title}}</h4>
         <p class="card-text"><i>{{movie_info.overview}}</i></p>
@@ -42,7 +42,7 @@
             <button type="submit" class="btn btn-sm btn-outline-secondary">Add to Collection</button>
           </div>
           <small class="text-body-secondary">Release Date: {{movie_info.release_date}} |
-            Score: {{movie_info.vote_average}} <p hidden>ID: {{movie_info.id}}</p></small>
+            Score: {{movie_info.vote_average}} <input type="hidden" name="movieID" value="{{movie_info.id}}"></input></small>
         </div>
       </div>
     </div>

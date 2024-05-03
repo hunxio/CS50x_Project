@@ -41,7 +41,9 @@
             <button type="button" class="btn btn-sm btn-outline-secondary">Add to Collection</button>
           </div>
           <small class="text-body-secondary">Release Date: {{movie_info.release_date}} |
-            Score: {{movie_info.vote_average}} <p hidden>ID: {{movie_info.id}}</p></small>
+            Score: {{movie_info.vote_average}}
+            <input type="hidden" name="movieID" value="{{movie_info.id}}">
+          </small>
         </div>
       </div>
     </div>
