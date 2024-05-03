@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from utils import (
     ErrorTemplate,
     ErrorConnection,
-    acquireSessionEmail,
+    acquireSessionUsername,
     hashPassword,
     trendingMovieAPI,
     searchAPI,
@@ -46,7 +46,7 @@ def home():
 
     con = sqlite3.connect(str(database_url))
     cur = con.cursor()
-    userUsername = acquireSessionEmail(cur)
+    userUsername = acquireSessionUsername(cur)
     return render_template("homepage.html", username=userUsername)
 
 
@@ -229,7 +229,7 @@ def setting():
 
     con = sqlite3.connect(str(database_url))
     cur = con.cursor()
-    userUsername = acquireSessionEmail(cur)
+    userUsername = acquireSessionUsername(cur)
     return render_template("settings.html", username=userUsername)
 
 
@@ -245,7 +245,7 @@ def changePassword():
 
     if request.method == "POST":
         # Session Username #
-        sessionUsername = acquireSessionEmail(cur)
+        sessionUsername = acquireSessionUsername(cur)
 
         # NEW PASSWORD VALIDATION #
         newPassword = request.form.get("newPassword")
@@ -285,7 +285,7 @@ def changePassword():
         con.close()
         return redirect("success")
 
-    userUsername = acquireSessionEmail(cur)
+    userUsername = acquireSessionUsername(cur)
     con.close()
     return render_template("changepassword.html", username=userUsername)
 
@@ -302,7 +302,7 @@ def changeusername():
 
     if request.method == "POST":
         # Session Username #
-        sessionUsername = acquireSessionEmail(cur)
+        sessionUsername = acquireSessionUsername(cur)
 
         # USERNAME VALIDATION #
         newUsername = request.form.get("newUsername")
@@ -334,7 +334,7 @@ def changeusername():
         con.close()
         return redirect("success")
 
-    userUsername = acquireSessionEmail(cur)
+    userUsername = acquireSessionUsername(cur)
     con.close()
     return render_template("changeusername.html", username=userUsername)
 
@@ -459,7 +459,7 @@ def searchresult():
 def collection():
     con = sqlite3.connect(str(database_url))
     cur = con.cursor()
-    username = acquireSessionEmail(cur)
+    username = acquireSessionUsername(cur)
     user_collection = []
 
     con.close()
