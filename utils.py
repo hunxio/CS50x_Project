@@ -23,7 +23,7 @@ def ErrorTemplate(code_error):
 
 
 # Access to database and looks for user's username by filtering by email (session host)
-def acquireSessionEmail(cur):
+def acquireSessionUsername(cur):
     email = session.get("email")
     usernameCur = cur.execute("SELECT username FROM users WHERE email = ?;", (email,))
     userUsername = usernameCur.fetchone()[0]
