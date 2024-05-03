@@ -415,7 +415,7 @@ def searchresult():
                     "id": movie_id
                 }
             )
-            print(movie_id)
+            #print(movie_id)
     except TypeError:
         return ErrorConnection(con, "No results found")
     con.close()
@@ -430,4 +430,4 @@ def collection():
     user_collection = []
 
     con.close()
-    return render_template("collection.html", username=userid, collection=user_collection)
+    return render_template("collection.html", username=username, collection=user_collection)
