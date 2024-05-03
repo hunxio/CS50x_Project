@@ -1,5 +1,6 @@
 .env
 database.db
+.DS_Store
 flask_session/*
 virtualenvOS/*
 virtualenvWindows/*
