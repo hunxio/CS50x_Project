@@ -351,7 +351,6 @@ def gallery():
 
     trending_list = []
 
-    # TODO: ADD MOVIES TO USER COLLECTION WHEN CLICKING ON BUTTON
     if request.method == "POST":
         cur.execute(
             "CREATE TABLE IF NOT EXISTS usersCollection(movie_id INTEGER PRIMARY KEY NOT NULL, user_id INTEGER NOT NULL);"
@@ -448,7 +447,6 @@ def searchresult():
                     "id": movie_id,
                 }
             )
-            # Test: print(movie_id)
     except TypeError:
         return ErrorConnection(con, "No results found")
     con.close()
