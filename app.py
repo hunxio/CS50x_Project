@@ -411,8 +411,9 @@ def searchresult():
     search_list = []
 
     if request.method == "POST":
+        #TODO: FIX THE DB MULTIPLE MOVIES 
         cur.execute(
-            "CREATE TABLE IF NOT EXISTS usersCollection(movie_id INTEGER PRIMARY KEY NOT NULL, user_id INTEGER NOT NULL);"
+            "CREATE TABLE IF NOT EXISTS usersCollection(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, movie_id INTEGER NOT NULL, user_id INTEGER NOT NULL);"
         )
         movie_id = request.form.get("movieID")
         try:
@@ -469,23 +470,25 @@ def collection():
 
     username = acquireSessionUsername(cur)
     userid = acquireSessionId(cur)
-
-    movieIdUserCollection = cur.execute(
-        "SELECT movie_id FROM usersCollection WHERE user_id = ?;", (userid,)
-    )
-    idCollection = cur.fetchall()
-
-    user_list = []
-    con.close()
-
-    for i in range(len(idCollection)):
-        api_result = idSearchAPI(idCollection[i][0])
-        title = api_result[0]
-        image = api_result[1]
-        user_list.append(
-            {
-                "title": title,
-                "image": image,
-            }
+    try:
+        movieIdUserCollection = cur.execute(
+            "SELECT movie_id FROM usersCollection WHERE user_id = ?;", (userid,)
         )
+        idCollection = cur.fetchall()
+
+        user_list = []
+        con.close()
+
+        for i in range(len(idCollection)):
+            api_result = idSearchAPI(idCollection[i][0])
+            title = api_result[0]
+            image = api_result[1]
+            user_list.append(
+                {
+                    "title": title,
+                    "image": image,
+                }
+            )
+    except sqlite3.OperationalError:
+        return render_template("collection.html", username=username)
     return render_template("collection.html", username=username, collection=user_list)
