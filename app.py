@@ -394,7 +394,7 @@ def gallery():
     return render_template("gallery.html", trending_list=trending_list)
 
 
-@app.route("/searchresult", methods=["GET"])
+@app.route("/searchresult", methods=["GET", "POST"])
 def searchresult():
     # Database connection #
     con = sqlite3.connect(str(database_url))
