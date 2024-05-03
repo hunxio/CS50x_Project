@@ -359,7 +359,9 @@ def gallery():
         )
         movie_id = request.form.get("movieID")
         try:
-            movieIdCur = cur.execute("SELECT movie_id FROM usersCollection WHERE user_id = ?;", (userid,))
+            movieIdCur = cur.execute(
+                "SELECT movie_id FROM usersCollection WHERE user_id = ?;", (userid,)
+            )
             movieIdFetch = cur.fetchall()
             for i in range(len(movieIdFetch)):
                 if movieIdFetch[i][0] == int(movie_id):
@@ -371,7 +373,7 @@ def gallery():
             (movie_id, userid),
         )
         con.commit()
-        con.close() 
+        con.close()
         return redirect("/collection")
 
     # It will only select the first 12 appearing in the API response #
@@ -421,7 +423,9 @@ def searchresult():
         )
         movie_id = request.form.get("movieID")
         try:
-            movieIdCur = cur.execute("SELECT movie_id FROM usersCollection WHERE user_id = ?;", (userid,))
+            movieIdCur = cur.execute(
+                "SELECT movie_id FROM usersCollection WHERE user_id = ?;", (userid,)
+            )
             movieIdFetch = cur.fetchall()
             for i in range(len(movieIdFetch)):
                 if movieIdFetch[i][0] == int(movie_id):
@@ -433,7 +437,7 @@ def searchresult():
             (movie_id, userid),
         )
         con.commit()
-        con.close() 
+        con.close()
         return redirect("/collection")
 
     # It will only select the first 12 appearing in the API response #
