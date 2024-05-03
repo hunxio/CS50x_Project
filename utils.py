@@ -127,3 +127,28 @@ def searchAPI(position, query):
             return None
     else:
         return "Failed to retrieve data. API not working properly."
+
+
+def idSearchAPI(movieId):
+
+    url = "https://api.themoviedb.org/3/movie/" + str(movieId)
+
+    headers = {"accept": "application/json", "Authorization": "Bearer " + str(api_key)}
+
+    response = requests.get(url, headers=headers)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        title = response.json()["title"]
+        image = response.json()["poster_path"]
+        # Base URL
+        base_image_url = "https://image.tmdb.org/t/p/w500"
+        # Relative to movie URL
+        poster_path = str(image)
+
+        # Complete URL for Movie Image
+        complete_image = base_image_url + poster_path
+
+        return title, complete_image
+    else:
+        return ErrorTemplate("Failed to retrieve data. API not working properly.")
