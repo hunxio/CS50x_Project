@@ -352,7 +352,7 @@ def gallery():
     trending_list = []
 
     # It will only select the first 6 appearing in the API response #
-    for i in range(15):
+    for i in range(12):
         api_result = trendingMovieAPI(i)
         title = api_result[0]
         image = api_result[1]
@@ -394,7 +394,7 @@ def searchresult():
 
     # It will only select the first 6 appearing in the API response #
     try:
-        for i in range(15):
+        for i in range(12):
             api_result = searchAPI(i, movieName)
             title = api_result[0]
             image = api_result[1]
