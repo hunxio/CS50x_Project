@@ -416,7 +416,6 @@ def searchresult():
     search_list = []
 
     if request.method == "POST":
-        #TODO: FIX THE DB MULTIPLE MOVIES 
         cur.execute(
             "CREATE TABLE IF NOT EXISTS usersCollection(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, movie_id INTEGER NOT NULL, user_id INTEGER NOT NULL);"
         )
