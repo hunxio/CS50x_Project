@@ -10,10 +10,11 @@ from utils import (
     ErrorTemplate,
     ErrorConnection,
     acquireSessionUsername,
+    acquireSessionId,
     hashPassword,
     trendingMovieAPI,
     searchAPI,
-    acquireSessionId,
+    idSearchAPI,
 )
 
 app = Flask(__name__)
@@ -353,7 +354,7 @@ def gallery():
 
     if request.method == "POST":
         cur.execute(
-            "CREATE TABLE IF NOT EXISTS usersCollection(movie_id INTEGER PRIMARY KEY NOT NULL, user_id INTEGER NOT NULL);"
+            "CREATE TABLE IF NOT EXISTS usersCollection(movie_id INTEGER NOT NULL, user_id INTEGER NOT NULL);"
         )
         movie_id = request.form.get("movieID")
         try:
@@ -365,7 +366,7 @@ def gallery():
             return ErrorConnection(con, "Movie already added to collection")
         con.commit()
         con.close()
-        return render_template("collection.html")
+        return redirect("/collection")
 
     # It will only select the first 12 appearing in the API response #
     for i in range(12):
@@ -422,7 +423,7 @@ def searchresult():
             return ErrorConnection(con, "Movie already added to collection")
         con.commit()
         con.close()
-        return render_template("collection.html")
+        return redirect("/collection")
 
     # It will only select the first 12 appearing in the API response #
     try:
@@ -457,12 +458,34 @@ def searchresult():
 
 @app.route("/collection", methods=["GET"])
 def collection():
+
     con = sqlite3.connect(str(database_url))
     cur = con.cursor()
-    username = acquireSessionUsername(cur)
-    user_collection = []
 
-    con.close()
-    return render_template(
-        "collection.html", username=username, collection=user_collection
+    # If user not logged in, it will be redirected to error page #
+    if not session.get("email"):
+        return ErrorConnection(con, "You are not logged in")
+
+    username = acquireSessionUsername(cur)
+    userid = acquireSessionId(cur)
+
+    movieIdUserCollection = cur.execute(
+        "SELECT movie_id FROM usersCollection WHERE user_id = ?;", (userid,)
     )
+    idCollection = cur.fetchall()
+
+    user_list = []
+    con.close()
+
+    for i in range(len(idCollection)):
+        api_result = idSearchAPI(idCollection[i][0])
+        title = api_result[0]
+        image = api_result[1]
+        user_list.append(
+            {
+                "title": title,
+                "image": image,
+            }
+        )
+    print(user_list)
+    return render_template("collection.html", username=username, collection=user_list)
