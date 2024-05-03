@@ -487,5 +487,4 @@ def collection():
                 "image": image,
             }
         )
-    print(user_list)
     return render_template("collection.html", username=username, collection=user_list)
