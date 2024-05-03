@@ -299,6 +299,7 @@ def changeusername():
 
     # If user not logged in, it will be redirected to error page #
     if not session.get("email"):
+        con.close()
         return ErrorConnection(con, "You are not logged in")
 
     if request.method == "POST":
