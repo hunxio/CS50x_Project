@@ -29,6 +29,7 @@
 <h1 style="padding:10px 0 10px 30px;">Results for "{{movieName}}"</h1>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="padding:0 30px 30px 30px; justify-content:center;">
   {% for movie_info in search_list %}
+  <form action="/searchresult" method="post">
   <div class="col">
     <div class="card shadow-sm">
       <img class="bd-placeholder-img card-img-top" width="100%" height="225" title= "Movie Picture" src={{movie_info.image}} role="img"
@@ -38,7 +39,7 @@
         <p class="card-text"><i>{{movie_info.overview}}</i></p>
         <div class="d-flex justify-content-between align-items-center">
           <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Add to Collection</button>
+            <button type="submit" class="btn btn-sm btn-outline-secondary">Add to Collection</button>
           </div>
           <small class="text-body-secondary">Release Date: {{movie_info.release_date}} |
             Score: {{movie_info.vote_average}}
@@ -48,6 +49,7 @@
       </div>
     </div>
   </div>
+</form>
   {% endfor %}
 </div>
 {% endif %}
