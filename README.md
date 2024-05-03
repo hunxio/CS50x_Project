@@ -32,6 +32,9 @@ https://www.themoviedb.org/
 <b>Flask Documentation:</b>
 https://flask.palletsprojects.com/en/3.0.x/
 
+<b> Flask installation and Virtual Enviroment Set up:</b>
+https://phoenixnap.com/kb/install-flask
+
 <b>Python, HTML, CSS Resources:</b>
 https://www.w3schools.com/
 
