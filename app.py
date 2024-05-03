@@ -362,6 +362,7 @@ def gallery():
         vote_average = api_result[4]
         # Formatting avg vote to X.XX #
         format_vote = "{:.2f}".format(vote_average)
+        movie_id = api_result[5]
         trending_list.append(
             {
                 "title": title,
@@ -369,13 +370,14 @@ def gallery():
                 "overview": overview,
                 "release_date": release_date,
                 "vote_average": format_vote,
+                "id": movie_id
             }
         )
     con.close()
     return render_template("gallery.html", trending_list=trending_list)
 
 
-@app.route("/searchresult", methods=["GET, POST"])
+@app.route("/searchresult", methods=["GET"])
 def searchresult():
     # Database connection #
     con = sqlite3.connect(str(database_url))
@@ -397,11 +399,12 @@ def searchresult():
             title = api_result[0]
             image = api_result[1]
             overview = api_result[2]
-            release_date = api_result[3]
             # Split the date string by the "-" character and select the first element
+            release_date = api_result[3]
             vote_average = api_result[4]
             # Formatting avg vote to X.XX #
             format_vote = "{:.2f}".format(vote_average)
+            movie_id = api_result[5]
             search_list.append( 
                 {
                     "title": title,
@@ -409,38 +412,22 @@ def searchresult():
                     "overview": overview,
                     "release_date": release_date,
                     "vote_average": format_vote,
+                    "id": movie_id
                 }
             )
+            print(movie_id)
     except TypeError:
         return ErrorConnection(con, "No results found")
     con.close()
     return render_template("searchresult.html", search_list=search_list, movieName=movieName)
 
-@app.route("/collection", methods=["GET", "POST"])
+@app.route("/collection", methods=["GET"])
 def collection():
     con = sqlite3.connect(str(database_url))
     cur = con.cursor()
     username = acquireSessionEmail(cur)
     userid = acquireSessionId(cur)
     user_collection = []
-    if request.method == "POST":
-        title = str(request.form.get("movieName"))
-        image = str(request.form.get("movieImage"))
-        cur.execute(
-            "CREATE TABLE IF NOT EXISTS usersCollection(userId INTEGER NOT NULL, movieaddId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT NOT NULL, image TEXT NOT NULL);"
-        )
-        cur.execute(
-            "INSERT INTO usersCollection(userId, title, image) VALUES(?,?,?);",
-            (userid, title, image),
-        )
-        con.commit()
-        user_collection.append( 
-            {
-                "title": title,
-                "image": image,
-            }
-        )
-        con.close()
-        return render_template("collection.html", username=username, collection=user_collection)
+
     con.close()
     return render_template("collection.html", username=userid, collection=user_collection)
