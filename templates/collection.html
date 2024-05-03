@@ -17,12 +17,12 @@
 {% endif %} {% endblock %}
 
 {% block main %} {% if session.email %}
-{% for movies in collection %}
 <div class="grid-container">
+{% for movie in collection %}
   <div class="grid-item">
-      <img src="{{movies.image}}" alt="Movie Banner">
-      <div class="movie-name">{{movies.title}}</div>
+      <img src="{{movie.image}}" alt="Movie Banner">
+      <div class="movie-name">{{movie.title}}</div>
   </div>
-</div>
 {% endfor %}
+</div>
 {% endif %}{% endblock %}
