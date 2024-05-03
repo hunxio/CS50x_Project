@@ -1,51 +1,42 @@
-# CS50 Final Project
+# CS50x Final Project
 
-This is the final project for CS50 x 2024 made by <a href="https://www.github.com/hunxio/">hunxio</a>.
+<img src="static/media/web-project-front-page.png">
 
 ## Contents
 - [Introduction](#introduction)
-- [Installation](#installation)
+- [Resources](#additional-resources)
 - [Contact](#contact)
-- [Additional Resources](#additional-resources)
 
 ## Introduction
 
-This project wants to create a social website, called MoviesDB, where you can create your
-own personal profile and add movies and tv shows to your collection.
+This is the final project for CS50 x 2024 made by <a href="https://www.github.com/hunxio/">hunxio</a>.
+This project wants to create a website, called MoviesDB, where people can sign up an account
+and get access to the daily top trending movies and not only; it will also give the user the opportunity to create
+its own personal collection of movies, or manage its account in case they need to modify the password or username.
+This website is hosted locally.
+I gave myself a month to get as much done for this project, even though some of the ideas and parts are missing (you can check the planning in planning/plan.drawio),
+I am quite happy about the results. *Quack!*
 <br>
-<img src="static/media/frontpage-readme-presentation.png">
 
-## Installation
+## Resources
 
-In order to test and run it you will need to have Python and Flask installed on your device.
-There are already setted up two different virtual enviroments, for Windows and MacOS,
-you will only need to activate one of them and run flask:
+<b>CS50x2024 Course:</b>
+https://www.edx.org/
 
-```bash
-$ username CS50Project % flask run
- * Debug mode: off
-WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
- * Running on http://123.4.5.6:7890
-```
-(the numbers following the http will be different)
+<b>Bootstrap for front-end resources:</b>
+https://getbootstrap.com/
 
-copy and paste the address showed in the Terminal in your browser (or CTRL + click on it).
-More informations about how to install Python and activate the virtual enviroment
-on the following pages:
-<ul>
-<li>Python Download: https://www.python.org/downloads/ </li>
-<li>Virtual Enviroment Activation: https://phoenixnap.com/kb/install-flask</li>
-</ul>
+<b>API Service provided by:</b>
+https://www.themoviedb.org/
+
+<b>Flask Documentation:</b>
+https://flask.palletsprojects.com/en/3.0.x/
+
+<b>Python, HTML, CSS Resources:</b>
+https://www.w3schools.com/
 
 ## Contact
 
 For more informations about this project, visit my github profile 
-<a href="https://www.github.com/hunxio">hunxio</a>.
 
-## Additional Resources
-
-Bootstrap for front-end resources:
-https://getbootstrap.com/
-
-API Service provided by:
-https://www.themoviedb.org/
+[![My Skills](https://skillicons.dev/icons?i=github)](https://github.com/hunxio)
