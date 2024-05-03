@@ -13,7 +13,7 @@ from utils import (
     hashPassword,
     trendingMovieAPI,
     searchAPI,
-    acquireSessionId
+    acquireSessionId,
 )
 
 app = Flask(__name__)
@@ -344,14 +344,31 @@ def gallery():
     # Database connection #
     con = sqlite3.connect(str(database_url))
     cur = con.cursor()
-
+    userid = acquireSessionId(cur)
     # If user not logged in, it will be redirected to error page #
     if not session.get("email"):
         return ErrorConnection(con, "You are not logged in")
 
     trending_list = []
 
-    # It will only select the first 6 appearing in the API response #
+    # TODO: ADD MOVIES TO USER COLLECTION WHEN CLICKING ON BUTTON
+    if request.method == "POST":
+        cur.execute(
+            "CREATE TABLE IF NOT EXISTS usersCollection(movie_id INTEGER PRIMARY KEY NOT NULL, user_id INTEGER NOT NULL);"
+        )
+        movie_id = request.form.get("movieID")
+        try:
+            cur.execute(
+                "INSERT INTO usersCollection(movie_id, user_id) VALUES(?, ?)",
+                (movie_id, userid),
+            )
+        except sqlite3.IntegrityError:
+            return ErrorConnection(con, "Movie already added to collection")
+        con.commit()
+        con.close()
+        return render_template("collection.html")
+
+    # It will only select the first 12 appearing in the API response #
     for i in range(12):
         api_result = trendingMovieAPI(i)
         title = api_result[0]
@@ -370,7 +387,7 @@ def gallery():
                 "overview": overview,
                 "release_date": release_date,
                 "vote_average": format_vote,
-                "id": movie_id
+                "id": movie_id,
             }
         )
     con.close()
@@ -382,7 +399,7 @@ def searchresult():
     # Database connection #
     con = sqlite3.connect(str(database_url))
     cur = con.cursor()
-
+    userid = acquireSessionId(cur)
     # If user not logged in, it will be redirected to error page #
     if not session.get("email"):
         return ErrorConnection(con, "You are not logged in")
@@ -392,7 +409,23 @@ def searchresult():
 
     search_list = []
 
-    # It will only select the first 6 appearing in the API response #
+    if request.method == "POST":
+        cur.execute(
+            "CREATE TABLE IF NOT EXISTS usersCollection(movie_id INTEGER PRIMARY KEY NOT NULL, user_id INTEGER NOT NULL);"
+        )
+        movie_id = request.form.get("movieID")
+        try:
+            cur.execute(
+                "INSERT INTO usersCollection(movie_id, user_id) VALUES(?, ?)",
+                (movie_id, userid),
+            )
+        except sqlite3.IntegrityError:
+            return ErrorConnection(con, "Movie already added to collection")
+        con.commit()
+        con.close()
+        return render_template("collection.html")
+
+    # It will only select the first 12 appearing in the API response #
     try:
         for i in range(12):
             api_result = searchAPI(i, movieName)
@@ -405,29 +438,33 @@ def searchresult():
             # Formatting avg vote to X.XX #
             format_vote = "{:.2f}".format(vote_average)
             movie_id = api_result[5]
-            search_list.append( 
+            search_list.append(
                 {
                     "title": title,
                     "image": image,
                     "overview": overview,
                     "release_date": release_date,
                     "vote_average": format_vote,
-                    "id": movie_id
+                    "id": movie_id,
                 }
             )
-            #print(movie_id)
+            # Test: print(movie_id)
     except TypeError:
         return ErrorConnection(con, "No results found")
     con.close()
-    return render_template("searchresult.html", search_list=search_list, movieName=movieName)
+    return render_template(
+        "searchresult.html", search_list=search_list, movieName=movieName
+    )
+
 
 @app.route("/collection", methods=["GET"])
 def collection():
     con = sqlite3.connect(str(database_url))
     cur = con.cursor()
     username = acquireSessionEmail(cur)
-    userid = acquireSessionId(cur)
     user_collection = []
 
     con.close()
-    return render_template("collection.html", username=username, collection=user_collection)
+    return render_template(
+        "collection.html", username=username, collection=user_collection
+    )
