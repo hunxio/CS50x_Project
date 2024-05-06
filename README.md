@@ -4,7 +4,7 @@
 
 ## Contents
 - [Introduction](#introduction)
-- [Resources](#additional-resources)
+- [Resources](#resources)
 - [Contact](#contact)
 
 ## Introduction
