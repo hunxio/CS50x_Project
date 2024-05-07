@@ -1,19 +1,19 @@
-# CS50x Final Project
+# MoviesDB
+#### Video Demo:  <URL HERE>
 
 <img src="static/media/web-project-front-page.png">
 
 ## Contents
-- [Introduction](#introduction)
+- [Description](#description)
 - [Resources](#resources)
 - [Contact](#contact)
 
-## Introduction
-
+## Description
 This is the final project for CS50 x 2024 made by <a href="https://www.github.com/hunxio/">hunxio</a>.
-This project wants to create a website, called MoviesDB, where people can sign up an account
-and get access to the daily top trending movies and not only; it will also give the user the opportunity to create
-its own personal collection of movies, or manage its account in case they need to modify the password or username.
 This website is hosted locally.
+MoviesDB wants to create a website, called MoviesDB, where people can sign up an account
+and get access to the daily top trending movies and not only; it will also give the user the opportunity to create
+its own personal collection of movies, or manage its account in case they need to modify their data.
 I gave myself a month to get as much done for this project, even though some of the ideas and parts are missing (you can check the planning in planning/plan.drawio),
 I am quite happy about the results. *Quack!*
 <br>
