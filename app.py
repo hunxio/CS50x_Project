@@ -47,7 +47,11 @@ def home():
 
     con = sqlite3.connect(str(database_url))
     cur = con.cursor()
-    userUsername = acquireSessionUsername(cur)
+    try:
+        userUsername = acquireSessionUsername(cur)
+    except:
+        logout()
+        return redirect("/homepage")
     return render_template("homepage.html", username=userUsername)
 
 
