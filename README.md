@@ -27,7 +27,15 @@ The data will be stored in a database and, the password is hashed and salted, an
 - <b>Gallery :</b> you can access the application movie database (informations are retrieved through the API), it will show everyday the top trending movies, you can also search for a movie by tipying the title in the search bar;
 - <b>Personal Data :</b> this section is your typical "Settings" page, here you will be able to change your password and username. The password has a pattern that needs to be followed, same for the username but less restrictive it will be checked also if the username you are trying to choose already exists in the database or not.
 <br>
+By clicking on the collection section, it will show you a list of movies that you have added to your account (this will fetch informations from the database); the database will contain the informations retrieved from the API which will get back to us the poster and the title of the movie. (I wanted to add a small "X" button to remove the movies from your collection, but I ran out of time)
+In the Gallery section, it will be shown to you the Top Trending movies, updated day by day, here you can add movies to your collection. You can not find the movies you have watched in the Top Trending page? No worries, You can use the search bar at the top of the page to look for it. (Sorry for the small ad ahah)
+Last but no least important we have the Personal Data section, once you clicked on it you will be see two buttons, one for changing your password and one for changing your username. Username and password "follow" a pattern, the one for the password is more
+restrictive; whenever you try to change your personal informations a check on the database will be done and, if everything is correct and passes the checks, you will have successfully changed either your password and/or username.
+<br>
+<br>
+
 I have mostly used Bootstrap for the FrontEnd part of this project, modified the layout and parts in both CSS and HTML.
+
 <br>
 
 ## Folders
